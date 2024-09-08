@@ -1,0 +1,53 @@
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    border-radius: 0 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 0 !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
+  border-radius: 0 !important;
+}
+  
+
+button.mat-flat-button {
+ border-radius: 0 !important;
+}
+  
+ 
+.mat-form-field-appearance-outline .mat-form-field-flex {
+  margin-top: 0 !important;
+}
+
+button.mat-flat-button {
+  height: 50px;
+}
+  
+  
+mat-form-field {
+  flex-grow: 1;
+}
+  
+mat-form-field:first-child {
+  min-width: 300px;
+}
+  
+mat-form-field:nth-child(2) {
+  min-width: 150px;
+}
+  
+button {
+  height: 50px;
+  position: relative;
+  top: 5px;
+  box-shadow: none !important;
+}
+
+.icon-style {
+    font-size: larger;
+    position: relative;
+    bottom: 4px;
+}

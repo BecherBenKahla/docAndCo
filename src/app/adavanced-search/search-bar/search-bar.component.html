@@ -1,0 +1,15 @@
+<div fxLayout="row">
+    <mat-form-field appearance="outline" fxFlex="50%">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
+        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="30%">
+        <mat-icon class="icon-style" matPrefix><i class="fas fa-map-marker-alt"></i></mat-icon>
+        <mat-label>Où ?</mat-label>
+        <input matInput [(ngModel)]="location" placeholder="Ex. Brest">
+        <mat-icon class="icon-style" matSuffix><i class="fas fa-crosshairs"></i></mat-icon>
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
+</div>
