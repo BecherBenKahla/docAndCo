@@ -1,0 +1,717 @@
+[
+    {
+        "medicalSpecialtyId": 9,
+        "name": "Addictologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 147,
+        "name": "Adressage - Hôpital SAINT CAMILLE",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 11,
+        "name": "Allergologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 114,
+        "name": "Allergologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 12,
+        "name": "Anatomie et Cytologie Pathologiques",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 13,
+        "name": "Anesthésie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 14,
+        "name": "Angiologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 138,
+        "name": "Assistante Sociale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 93,
+        "name": "Audioprothèsie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 128,
+        "name": "Auxilliaire de vie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 15,
+        "name": "Biologie Médicale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 2,
+        "name": "Cardiologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 158,
+        "name": "Cardiologie du sport",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 59,
+        "name": "Cardiologie Interventionnelle",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 100,
+        "name": "Cardiologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 132,
+        "name": "Centre d’Évaluation et de Traitement de la Douleur",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 117,
+        "name": "Chirurgie Bariatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 56,
+        "name": "Chirurgie Cervico-Faciale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 143,
+        "name": "Chirurgie de la main ",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 58,
+        "name": "Chirurgie Dentaire",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 148,
+        "name": "Chirurgie Endocrinienne",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 109,
+        "name": "Chirurgie Générale pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 29,
+        "name": "Chirurgie Gynécologique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 19,
+        "name": "Chirurgie Maxillo-faciale et Stomatologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 90,
+        "name": "Chirurgie Orthopédique - Membre Inférieur",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 89,
+        "name": "Chirurgie Orthopédique - Membre Supérieur",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 69,
+        "name": "Chirurgie Orthopédique - Rachis",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 112,
+        "name": "Chirurgie Orthopédique pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 21,
+        "name": "Chirurgie Plastique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 22,
+        "name": "Chirurgie Thoracique et Cardio-vasculaire",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 23,
+        "name": "Chirurgie Vasculaire",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 17,
+        "name": "Chirurgie Viscérale et Digestive",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 111,
+        "name": "Chirurgie Viscérale et Digestive pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 152,
+        "name": "Cicatrisation",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 124,
+        "name": "Coordination Territoriale des Parcours en Santé",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 24,
+        "name": "Dermatologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 110,
+        "name": "Dermatologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 62,
+        "name": "Diabétologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 115,
+        "name": "Diabétologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 88,
+        "name": "Echographie Pelvienne",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 71,
+        "name": "EEG - Électroencéphalogramme",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 26,
+        "name": "EFR - Explorations Fonctionnelles Respiratoires",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 70,
+        "name": "EMG - Électromyogramme",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 25,
+        "name": "Endocrinologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 116,
+        "name": "Endocrinologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 94,
+        "name": "Ergothérapie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 72,
+        "name": "Explorations Neurophysiologiques",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 156,
+        "name": "Filière Fractures  Ostéoporoses  Fragilité osseuse",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 73,
+        "name": "Gastro-Entérologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 108,
+        "name": "Gastro-Entérologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 27,
+        "name": "Génétique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 4,
+        "name": "Gériatrie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 127,
+        "name": "Gestionnaire de cas",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 118,
+        "name": "Gynécologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 28,
+        "name": "Gynécologie - Obstétrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 145,
+        "name": "Gynécologie chirurgicale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 104,
+        "name": "Hémato-oncologie pédiatriques",
+        "passwordExpirationDelay": 180
+    },
+    {
+        "medicalSpecialtyId": 31,
+        "name": "Hématologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 32,
+        "name": "Hépato-Gastro-Entérologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 76,
+        "name": "Hépatologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 67,
+        "name": "Hypnose",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 161,
+        "name": "Imagerie sous anesthésie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 135,
+        "name": "Infections Ostéo-Articulaires - CRIOAC",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 87,
+        "name": "Infertilité - PMA",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 139,
+        "name": "Infirmier Coordinateur - IDEC",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 160,
+        "name": "Infirmier de Pratique Avancée",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 123,
+        "name": "IVG",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 92,
+        "name": "Kinésithérapie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 125,
+        "name": "Kinésithérapie Vestibulaire",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 157,
+        "name": "Maison Sport Santé",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 33,
+        "name": "Maladies Infectieuses et Tropicales",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 10,
+        "name": "Médecine de la Douleur - Algologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 61,
+        "name": "Médecine du Sommeil",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 7,
+        "name": "Médecine du Sport",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 34,
+        "name": "Médecine du Travail",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 79,
+        "name": "Médecine Esthétique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 1,
+        "name": "Médecine Générale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 3,
+        "name": "Médecine Interne",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 35,
+        "name": "Médecine Légale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 36,
+        "name": "Médecine Nucléaire",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 37,
+        "name": "Médecine Physique et Réadaptation",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 64,
+        "name": "Médecine Polyvalente Hospitalière",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 80,
+        "name": "Néonatalogie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 38,
+        "name": "Néphrologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 113,
+        "name": "Néphrologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 39,
+        "name": "Neurochirurgie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 5,
+        "name": "Neurologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 102,
+        "name": "Neurologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 131,
+        "name": "Neuroradiologie interventionnelle",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 78,
+        "name": "Nutrition - Diététique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 77,
+        "name": "Onco-Hématologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 8,
+        "name": "Oncologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 63,
+        "name": "Oncologie Digestive",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 150,
+        "name": "Oncologie Thoracique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 41,
+        "name": "Ophtalmologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 42,
+        "name": "ORL",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 95,
+        "name": "Orthophonie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 96,
+        "name": "Orthoptie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 159,
+        "name": "Ostéopathie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 133,
+        "name": "Patients Internationaux",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 101,
+        "name": "Pédiatrie Générale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 84,
+        "name": "Pédicurie - Podologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 126,
+        "name": "Pédopsychiatrie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 54,
+        "name": "Pharmacie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 122,
+        "name": "Phlébologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 44,
+        "name": "Pneumologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 103,
+        "name": "Pneumologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 99,
+        "name": "Podologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 86,
+        "name": "Podologie du Sport",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 142,
+        "name": "Polysomnographie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 60,
+        "name": "Procréation Médicalement Assistée",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 45,
+        "name": "Psychiatrie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 120,
+        "name": "Psychologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 141,
+        "name": "Psychomotricité",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 46,
+        "name": "Radiologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 134,
+        "name": "Radiologie Interventionnelle",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 47,
+        "name": "Radiothérapie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 149,
+        "name": "Réadaptation Cardiaque",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 154,
+        "name": "Réadaptation Pneumologique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 75,
+        "name": "Réanimation Chirurgicale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 74,
+        "name": "Réanimation Médicale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 121,
+        "name": "Réévaluation COVID 19 - Val de Marne 94",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 137,
+        "name": "Réévaluation COVID 19 - Yvelines 78",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 48,
+        "name": "Rhumatologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 106,
+        "name": "Rhumatologie pédiatrique",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 68,
+        "name": "Rythmologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 91,
+        "name": "Sage-femme",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 49,
+        "name": "SAMU - SMUR",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 155,
+        "name": "Sanatorium",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 50,
+        "name": "Santé Publique et Médecine Sociale",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 65,
+        "name": "Sexologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 129,
+        "name": "Soin / Aide à Domicile (HAD-PRADO-PSAD-SAAD-SSIAD)",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 151,
+        "name": "Soins de Suite - Gériatrie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 97,
+        "name": "Soins Infirmiers",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 140,
+        "name": "Soins Infirmiers - COVID 19",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 51,
+        "name": "Soins Palliatifs",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 107,
+        "name": "Soins Palliatifs pédiatriques",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 52,
+        "name": "Stomatologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 66,
+        "name": "Tabacologie",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 130,
+        "name": "Tuberculose - CLAT",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 6,
+        "name": "Urgences",
+        "passwordExpirationDelay": 180
+    },
+    {
+        "medicalSpecialtyId": 144,
+        "name": "Urgences - SOS MAINS",
+        "passwordExpirationDelay": 365
+    },
+    {
+        "medicalSpecialtyId": 53,
+        "name": "Urologie",
+        "passwordExpirationDelay": 365
+    }
+]

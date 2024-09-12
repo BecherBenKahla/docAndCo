@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { combineLatest, finalize, tap } from 'rxjs';
+import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
 
 @Component({
   selector: 'app-adavanced-search',
@@ -11,8 +13,9 @@ export class AdavancedSearchComponent implements OnInit {
   displayedColumns: string[] = ['profil', 'identite', 'specialite', 'structure', 'localisation', 'distance', 'actions'];
   dataSource: MatTableDataSource<any>;
   sortBy = 'firstName';
+  isLoading = true;
 
-  constructor() {
+  constructor(private advancedSearchService: AdvancedSearchService) {
     const data = [
       { identite: 'Hôpital de Morvan', specialite: '+9 spécialités disponibles', structure: 'CHRU', localisation: '29 Brest', distance: '137 km' },
       { identite: 'ABGRAL Karim', specialite: 'Cardiologie', structure: 'Hôpital de Morvan', localisation: '29 Brest', distance: '232 km' },
@@ -24,6 +27,24 @@ export class AdavancedSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getSearchData();
+  }
+
+  getSearchData() {
+    combineLatest([
+      this.advancedSearchService.getPersons(),
+      this.advancedSearchService.getSpecialities(),
+      this.advancedSearchService.getStructures(),
+    ]).pipe(
+      tap({
+        next: ([persons, specialities, structures]) => {
+          console.log('persons', persons);
+          console.log('specialities', specialities);
+          console.log('structures', structures);
+        }
+      }),
+      finalize(() => this.isLoading = false)
+    ).subscribe();
   }
 
   removeChip() {
