@@ -25,7 +25,7 @@ export class AdvancedSearchService {
   }
 
   getSpecialities(): Observable<Specialty[]> {
-    let specialitiesDocumentPath = 'assets/data/structures.json'
+    let specialitiesDocumentPath = 'assets/data/specialties.json'
     return this.http.get<Specialty[]>(specialitiesDocumentPath).pipe(
       first(),
     );
