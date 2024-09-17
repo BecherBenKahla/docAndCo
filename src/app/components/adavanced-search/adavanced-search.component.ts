@@ -14,6 +14,7 @@ export class AdavancedSearchComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   sortBy = 'firstName';
   isLoading = true;
+  combinedData :any;
 
   constructor(private advancedSearchService: AdvancedSearchService) {
     const data = [
@@ -38,9 +39,7 @@ export class AdavancedSearchComponent implements OnInit {
     ]).pipe(
       tap({
         next: ([persons, specialities, structures]) => {
-          console.log('persons', persons);
-          console.log('specialities', specialities);
-          console.log('structures', structures);
+          this.combinedData = [persons, specialities, structures];
         }
       }),
       finalize(() => this.isLoading = false)
@@ -53,6 +52,10 @@ export class AdavancedSearchComponent implements OnInit {
 
   removeAllFilters() {
     console.log('Supprimer tous les filtres');
+  }
+
+  getItemsFromChild(items: any) {
+    console.log(items);
   }
 
 }

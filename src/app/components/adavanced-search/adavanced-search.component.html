@@ -1,5 +1,5 @@
 <mat-card style="max-width: 900px;">
-    <app-search-bar></app-search-bar>
+    <app-search-bar [data] = "combinedData" *ngIf="combinedData" (newItemEvent)="getItemsFromChild($event)"></app-search-bar>
     <ng-container *ngIf="!isLoading; else waitTemplate">
         <div fxLayout="row" class="space-between-records" fxLayoutAlign="start center">
             <span class="space-between-elements">Afficher uniquement</span>
