@@ -75,7 +75,7 @@ export class SearchBarComponent implements OnInit {
   onSearch() {
     //this.newItemEvent.emit(this.currentFilteredOptions);
     if(typeof(this.searchTerm) === 'string') {
-      this.newItemEvent.emit(this.searchTerm);
+      this.newItemEvent.emit({ whoSearchText: this.searchTerm });
     } else {
       this.getData(this.searchTerm);
     }
