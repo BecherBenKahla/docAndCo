@@ -74,12 +74,7 @@ export class SearchBarComponent implements OnInit {
   
   onSearch() {
     //this.newItemEvent.emit(this.currentFilteredOptions);
-    if(typeof(this.searchTerm) === 'string') {
-      this.newItemEvent.emit({ whoSearchText: this.searchTerm });
-    } else {
       this.getData(this.searchTerm);
-    }
-    
   }
 
   onOptionSelected(event : any): void { 
@@ -94,28 +89,35 @@ export class SearchBarComponent implements OnInit {
       whereSearchText: "",
       sectionUsed: "",
       showDetail:false,
-      dataPerson:{}
+      dataPerson:{},
+      idSpeciality:-1
     }
-    if(this.persons.includes(dataOption)) {
-      item.whoSearchText = dataOption.fullName;
-      item.sectionUsed = "PS";
-      item.showDetail = true;
-      item.dataPerson = {
-        firstName: dataOption.firstName,
-        lastName: dataOption.lastName,
-        speciality: dataOption.medicalSpecialtyNames,
-        rpps: dataOption.rpps,
-        phone: dataOption.phoneNumber,
-        location: ' ... ',
-        email: dataOption.email
-      }
-    } else if(this.specialities.includes(dataOption)) {
-        item.whoSearchText = dataOption.name;
-        item.sectionUsed = "SPECIALTIE";
+    if(typeof(dataOption) === 'string') {
+      item.whoSearchText = dataOption;
     } else {
-      item.whoSearchText = dataOption.name;
-      item.sectionUsed = "SDS";
+      if(this.persons.includes(dataOption)) {
+        item.whoSearchText = dataOption.fullName;
+        item.sectionUsed = "PS";
+        item.showDetail = true;
+        item.dataPerson = {
+          firstName: dataOption.firstName,
+          lastName: dataOption.lastName,
+          speciality: dataOption.medicalSpecialtyNames,
+          rpps: dataOption.rpps,
+          phone: dataOption.phoneNumber,
+          location: ' ... ',
+          email: dataOption.email
+        }
+      } else if(this.specialities.includes(dataOption)) {
+          item.whoSearchText = dataOption.name;
+          item.sectionUsed = "SPECIALTIE";
+          item.idSpeciality = dataOption.medicalSpecialtyId;
+      } else {
+        item.whoSearchText = dataOption.name;
+        item.sectionUsed = "SDS";
+      }
     }
+
     //this.newItemEvent.emit(event.option.value);
     this.newItemEvent.emit(item);
   }

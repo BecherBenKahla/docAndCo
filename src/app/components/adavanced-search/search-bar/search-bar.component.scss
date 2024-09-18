@@ -107,3 +107,24 @@ button {
   background-color: #AAAAAA;
   cursor: pointer;
 }
+
+.mat-option .container .content #R {
+  position: relative;
+  font-size: 6px;
+  border-radius: 50%;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: rgb(69, 158, 114);
+  border: 1px solid rgb(69, 158, 114);
+  margin-right: 3px;
+  top: -2px;
+}
+
+.mat-option .container .content #trophy {
+  position: relative;
+  font-size: 8px;
+  color: rgb(209, 180, 14);
+  top: -2px;
+}

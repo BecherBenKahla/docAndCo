@@ -23,6 +23,8 @@ import { SearchBarComponent } from './components/adavanced-search/search-bar/sea
 import { HighlightPipe } from './common/pipes/highlight.pipe';
 import { AlphabeticPipePerson } from './common/pipes/alphabetic.pipe';
 import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
+import { PersonDetailComponent } from './person-detail/person-detail.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
     SearchBarComponent,
     HighlightPipe,
     AlphabeticPipePerson,
-    AlphabeticPipePecialty
+    AlphabeticPipePecialty,
+    PersonDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,7 @@ import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatPaginatorModule,
     FlexLayoutModule,
     MatRadioModule,
     MatChipsModule,

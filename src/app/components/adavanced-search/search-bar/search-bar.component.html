@@ -8,7 +8,9 @@
                 <div class="container">    
                     <i id="icon" class='fas fa-award'></i>   
                     <div class="content">
-                        <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'"></span>
+                        <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"></span>
+                        <i id="R" class="fas fa-r"></i>
+                        <i id="trophy" class='fas fa-trophy'></i>
                     </div>
                 </div>
             </mat-option>
@@ -20,7 +22,9 @@
                     <div class="content">
                         <span>Dr </span>
                         <span [innerHTML]="(option.firstName || '' ) | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"> </span> 
-                        <span [innerHTML]="(option.lastName || '') | highlight: toHighlight : 'highlight'"></span>
+                        <span [innerHTML]="(option.lastName || '') | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"></span>
+                        <i id="R" class="fas fa-r"></i>
+                        <i id="trophy" class='fas fa-trophy'></i>
                         <p>{{option.medicalSpecialtyNames}} - {{option.medicalStructureName}} - {{option.medicalStructureCity}}</p>
                     </div>
                 </div>
@@ -31,7 +35,9 @@
                 <div class="container">
                     <i id="icon" class='far fa-hospital'></i>
                     <div class="content">
-                        <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'"></span>
+                        <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"></span>
+                        <i id="R" class="fas fa-r"></i>
+                        <i id="trophy" class='fas fa-trophy'></i>
                         <p>{{option.city}}</p>
                     </div>
                 </div>
