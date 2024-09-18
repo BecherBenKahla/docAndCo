@@ -79,14 +79,14 @@ button {
   vertical-align: middle; /* Ensure icon is vertically centered with text */
 }
 
-span {
+.mat-option span {
 	font-size: 15px;
 	margin: 0;
 	line-height: 0.90rem;
 	position: relative;
 }
 
-p {
+.mat-option p {
 	position: relative;
 	font-size: 10px;
 	z-index: 1;

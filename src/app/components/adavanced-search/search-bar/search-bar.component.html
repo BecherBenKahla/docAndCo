@@ -6,7 +6,7 @@
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
             <mat-option *ngFor="let option of (filteredSpecialities | async) | alphabeticSpecialty" [value]="option" id="matOptions">
                 <div class="container">    
-                    <i class='fas fa-award'></i>   
+                    <i id="icon" class='fas fa-award'></i>   
                     <div class="content">
                         <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'"></span>
                     </div>
@@ -29,7 +29,7 @@
             <mat-divider></mat-divider>
             <mat-option *ngFor="let option of filteredStructures |  async" [value]="option" style="height: 60px;">
                 <div class="container">
-                    <i class='far fa-hospital'></i>
+                    <i id="icon" class='far fa-hospital'></i>
                     <div class="content">
                         <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'"></span>
                         <p>{{option.city}}</p>

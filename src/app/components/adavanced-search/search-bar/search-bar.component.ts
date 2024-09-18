@@ -21,7 +21,7 @@ export class SearchBarComponent implements OnInit {
   filteredSpecialities: any;
   filteredStructures: any;
   toHighlight: string = '';
-  currentFilteredOptions:any;
+  //currentFilteredOptions:any;
   
   @Input() data : any;
   @Output() newItemEvent = new EventEmitter<any>();
@@ -44,11 +44,11 @@ export class SearchBarComponent implements OnInit {
       map(value => value.length >= 1 ? this._filter(value || '', this.structures, 2): []),
     );
 
-    this.filteredPersons.subscribe((options:any) => {
+    /*this.filteredPersons.subscribe((options:any) => {
       this.currentFilteredOptions = options;
-    });
+    });*/
 
-
+    
    }
 
   ngOnInit(): void {
@@ -73,12 +73,51 @@ export class SearchBarComponent implements OnInit {
   }
   
   onSearch() {
-    this.newItemEvent.emit(this.currentFilteredOptions);
-
+    //this.newItemEvent.emit(this.currentFilteredOptions);
+    if(typeof(this.searchTerm) === 'string') {
+      this.newItemEvent.emit(this.searchTerm);
+    } else {
+      this.getData(this.searchTerm);
+    }
+    
   }
 
-  onOptionSelected(event : any): void {
-    this.newItemEvent.emit(event.option.value);
+  onOptionSelected(event : any): void { 
+    this.getData(event.option.value);
+  }
+
+  getData(dataOption:any) {
+    var item : any = {
+      whoAreaUsed: true ,
+      whereAreaUsed: false,
+      whoSearchText: "",
+      whereSearchText: "",
+      sectionUsed: "",
+      showDetail:false,
+      dataPerson:{}
+    }
+    if(this.persons.includes(dataOption)) {
+      item.whoSearchText = dataOption.fullName;
+      item.sectionUsed = "PS";
+      item.showDetail = true;
+      item.dataPerson = {
+        firstName: dataOption.firstName,
+        lastName: dataOption.lastName,
+        speciality: dataOption.medicalSpecialtyNames,
+        rpps: dataOption.rpps,
+        phone: dataOption.phoneNumber,
+        location: ' ... ',
+        email: dataOption.email
+      }
+    } else if(this.specialities.includes(dataOption)) {
+        item.whoSearchText = dataOption.name;
+        item.sectionUsed = "SPECIALTIE";
+    } else {
+      item.whoSearchText = dataOption.name;
+      item.sectionUsed = "SDS";
+    }
+    //this.newItemEvent.emit(event.option.value);
+    this.newItemEvent.emit(item);
   }
 
   displayFn(option: any): string {
