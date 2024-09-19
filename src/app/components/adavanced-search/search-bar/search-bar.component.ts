@@ -90,7 +90,8 @@ export class SearchBarComponent implements OnInit {
       sectionUsed: "",
       showDetail:false,
       dataPerson:{},
-      idSpeciality:-1
+      idSpeciality:-1,
+      selectedHospitalData: {}
     }
     if(typeof(dataOption) === 'string') {
       item.whoSearchText = dataOption;
@@ -114,7 +115,8 @@ export class SearchBarComponent implements OnInit {
           item.idSpeciality = dataOption.medicalSpecialtyId;
       } else {
         item.whoSearchText = dataOption.name;
-        item.sectionUsed = "SDS";
+        item.sectionUsed = "SDS",
+        item.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
       }
     }
 
