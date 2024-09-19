@@ -93,7 +93,7 @@ export class SearchBarComponent implements OnInit {
   
   onSearch() {
     //this.newItemEvent.emit(this.currentFilteredOptions);
-      this.getData(this.searchTerm);
+      this.getData(this.searchTerm, this.location);
   }
 
   onOptionSelected(event : any): void { 
@@ -108,7 +108,7 @@ export class SearchBarComponent implements OnInit {
       this.isQuiSelected = true;
       this.searchLocationControl.disable();
     }
-    this.getData(selectedValue);
+    this.getData(selectedValue, this.location);
   }
 
   onEnter() {
@@ -118,7 +118,7 @@ export class SearchBarComponent implements OnInit {
     this.onSearch();
   }
 
-  getData(dataOption:any) {
+  getData(dataOption:any, locationOption:any) {
     var item : any = {
       whoAreaUsed: true ,
       whereAreaUsed: false,
@@ -129,6 +129,10 @@ export class SearchBarComponent implements OnInit {
       dataPerson:{},
       idSpeciality:-1,
       selectedHospitalData: {}
+    }
+    if(locationOption) {
+      item.whereSearchText = locationOption;
+      item.whereAreaUsed = true;
     }
     if(typeof(dataOption) === 'string') {
       item.whoSearchText = dataOption;
@@ -167,7 +171,6 @@ export class SearchBarComponent implements OnInit {
 
   private _filterLocation(value: string, data: any): any[] {
     this.toHighlight = value;
-    debugger;
     // Check if the input starts with a number
     if (!isNaN(Number(value))) {
       // Case 1: 1 digit, return nothing
@@ -217,6 +220,7 @@ export class SearchBarComponent implements OnInit {
 
   // Set the value of 'location' to the selected option
   this.location = `${selectedValue.postalCode}, ${selectedValue.city}`;
+  this.getData(this.searchTerm, this.location)
   }
 
   // Handle typing in Qui (Who) input

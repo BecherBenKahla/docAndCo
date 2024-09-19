@@ -47,7 +47,6 @@ export class AdvancedSearchService {
             loc => loc.postalCode === location.postalCode && loc.city === location.city
           )
         );
-        debugger;
         return uniqueLocations;
       })
     );
