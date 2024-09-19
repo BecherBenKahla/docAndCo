@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { first, Observable } from 'rxjs';
+import { first, map, Observable } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
+import { Location } from 'src/app/common/models/location.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,23 @@ export class AdvancedSearchService {
     );
   }
 
-
-
-
+  getLocations(): Observable<Location[]> {
+    return this.getStructures().pipe(
+      map((structures: Structure[]) => {
+        // Map to locations
+        const locations = structures.map(structure => ({
+          postalCode: structure.postalCode ? structure.postalCode.toString() : '',
+          city: structure.city || ''
+        }));
+  
+        // Remove duplicates by filtering unique postalCode and city combinations
+        const uniqueLocations = locations.filter((location, index, self) =>
+          index === self.findIndex(
+            loc => loc.postalCode === location.postalCode && loc.city === location.city
+          )
+        );
+        return uniqueLocations;
+      })
+    );
+  }
 }

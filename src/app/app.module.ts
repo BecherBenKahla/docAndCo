@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,12 +11,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDividerModule} from '@angular/material/divider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdavancedSearchComponent } from './components/adavanced-search/adavanced-search.component';
 import { SearchBarComponent } from './components/adavanced-search/search-bar/search-bar.component';
+import { HighlightPipe } from './common/pipes/highlight.pipe';
+import { AlphabeticPipePerson } from './common/pipes/alphabetic.pipe';
+import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
+import { PersonDetailComponent } from './person-detail/person-detail.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -24,6 +32,10 @@ import { SearchBarComponent } from './components/adavanced-search/search-bar/sea
     AppComponent,
     AdavancedSearchComponent,
     SearchBarComponent,
+    HighlightPipe,
+    AlphabeticPipePerson,
+    AlphabeticPipePecialty,
+    PersonDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -34,10 +46,15 @@ import { SearchBarComponent } from './components/adavanced-search/search-bar/sea
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatPaginatorModule,
     FlexLayoutModule,
     MatRadioModule,
     MatChipsModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatDividerModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     HttpClientModule

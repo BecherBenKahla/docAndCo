@@ -1,15 +1,73 @@
 <div fxLayout="row">
-    <mat-form-field appearance="outline" fxFlex="50%">
+     <mat-form-field appearance="outline" fxFlex="50%">
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie">
+        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl" [matAutocomplete]="auto" (keydown.enter)="onEnter()">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of (filteredSpecialities | async) | alphabeticSpecialty" [value]="option" id="matOptions">
+                <div class="container">    
+                    <i id="icon" class='fas fa-award'></i>   
+                    <div class="content">
+                        <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"></span>
+                        <i id="R" class="fas fa-r"></i>
+                        <i id="trophy" class='fas fa-trophy'></i>
+                    </div>
+                </div>
+            </mat-option>
+
+            <mat-divider></mat-divider>
+            <mat-option *ngFor="let option of (filteredPersons | async) | alphabeticPerson" [value]="option" style="height: 60px;">
+               <div class="container">               
+                    <i id="icon" class='far fa-user'></i>
+                    <div class="content">
+                        <span>Dr </span>
+                        <span [innerHTML]="(option.firstName || '' ) | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"> </span> 
+                        <span [innerHTML]="(option.lastName || '') | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"></span>
+                        <i id="R" class="fas fa-r"></i>
+                        <i id="trophy" class='fas fa-trophy'></i>
+                        <p>{{option.medicalSpecialtyNames}} - {{option.medicalStructureName}} - {{option.medicalStructureCity}}</p>
+                    </div>
+                </div>
+            </mat-option>
+
+            <mat-divider></mat-divider>
+            <mat-option *ngFor="let option of filteredStructures |  async" [value]="option" style="height: 60px;">
+                <div class="container">
+                    <i id="icon" class='far fa-hospital'></i>
+                    <div class="content">
+                        <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'" style="margin-right: 5px;"git chec></span>
+                        <i id="R" class="fas fa-r"></i>
+                        <i id="trophy" class='fas fa-trophy'></i>
+                        <p>{{option.city}}</p>
+                    </div>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
+        <mat-icon *ngIf="searchTerm" (click)="clearQuiField()" class="clearIcon" matSuffix>clear</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" fxFlex="30%">
         <mat-icon class="icon-style" matPrefix><i class="fas fa-map-marker-alt"></i></mat-icon>
         <mat-label>Où ?</mat-label>
-        <input matInput [(ngModel)]="location" placeholder="Ex. Brest">
-        <mat-icon class="icon-style" matSuffix><i class="fas fa-crosshairs"></i></mat-icon>
-    </mat-form-field>
+        <input
+          matInput
+          [(ngModel)]="location"
+          [formControl]="searchLocationControl"
+          placeholder="Ex. Paris, 75001, Île-de-France"
+          [matAutocomplete]="autoLocation" (input)="onOuInputChange()">
+    
+        <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
+          <mat-option *ngFor="let option of (filteredLocation | async)" [value]="option" id="matOption">
+            <div class="container">
+              <i class="fas fa-location-dot"></i>
+              <div class="content">
+                <span [innerHTML]="(option.postalCode || '') | highlight: toHighlight : 'highlight'"></span>,
+                <span [innerHTML]="(option.city || '') | highlight: toHighlight : 'highlight'"></span>
+              </div>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon *ngIf="location" (click)="clearOuField()" class="clearIcon" matSuffix>clear</mat-icon>
+      </mat-form-field>
     <button mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
 </div>
