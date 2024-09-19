@@ -99,7 +99,7 @@ export class SearchBarComponent implements OnInit {
   onOptionSelected(event : any): void { 
     const selectedValue = event.option.value;
 
-    if (selectedValue && selectedValue.hasOwnProperty('name')) {
+    if (selectedValue && selectedValue.hasOwnProperty('medicalSpecialtyId')) {
       this.isSpecialtySelected = true;
       this.isQuiSelected = true;  // Something is selected
       this.searchLocationControl.enable(); // Enable "Où" field if a specialty is selected
