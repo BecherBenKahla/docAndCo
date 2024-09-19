@@ -115,6 +115,9 @@ export class SearchBarComponent implements OnInit {
     if (this.matAutocomplete.panelOpen) {
       this.matAutocomplete.closePanel(); 
     }
+    this.isSpecialtySelected = false;
+    this.isQuiSelected = false;
+    this.searchLocationControl.disable();
     this.onSearch();
   }
 
