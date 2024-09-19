@@ -43,14 +43,35 @@
                 </div>
             </mat-option>
         </mat-autocomplete>
+<<<<<<< HEAD
         <mat-icon *ngIf="searchTerm" (click)="searchTerm=''" class="clearIcon" matSuffix>clear</mat-icon>
+=======
+        <mat-icon *ngIf="searchTerm" (click)="clearQuiField()" class="clearIcon" matSuffix>clear</mat-icon>
+>>>>>>> ZoneOuBranche
     </mat-form-field>
 
     <mat-form-field appearance="outline" fxFlex="30%">
         <mat-icon class="icon-style" matPrefix><i class="fas fa-map-marker-alt"></i></mat-icon>
         <mat-label>Où ?</mat-label>
-        <input matInput [(ngModel)]="location" placeholder="Ex. Brest">
-        <mat-icon class="icon-style" matSuffix><i class="fas fa-crosshairs"></i></mat-icon>
-    </mat-form-field>
+        <input
+          matInput
+          [(ngModel)]="location"
+          [formControl]="searchLocationControl"
+          placeholder="Ex. Paris, 75001, Île-de-France"
+          [matAutocomplete]="autoLocation" (input)="onOuInputChange()">
+    
+        <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
+          <mat-option *ngFor="let option of (filteredLocation | async)" [value]="option" id="matOption">
+            <div class="container">
+              <i class="fas fa-location-dot"></i>
+              <div class="content">
+                <span [innerHTML]="(option.postalCode || '') | highlight: toHighlight : 'highlight'"></span>,
+                <span [innerHTML]="(option.city || '') | highlight: toHighlight : 'highlight'"></span>
+              </div>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon *ngIf="location" (click)="clearOuField()" class="clearIcon" matSuffix>clear</mat-icon>
+      </mat-form-field>
     <button mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
 </div>
