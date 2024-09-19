@@ -3,10 +3,8 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
-<<<<<<< HEAD
-=======
 import { Location } from 'src/app/common/models/location.model';
->>>>>>> ZoneOuBranche
+
 
 @Component({
   selector: 'app-search-bar',
@@ -17,27 +15,14 @@ import { Location } from 'src/app/common/models/location.model';
 export class SearchBarComponent implements OnInit {
 
   searchControl = new FormControl('');
-<<<<<<< HEAD
-=======
   searchLocationControl = new FormControl('');
->>>>>>> ZoneOuBranche
+
   searchTerm: string = '';
   location: string = '';
   persons : Person[] = [];
   specialities : Specialty[] = [];
   structures : Structure[] = [];
-<<<<<<< HEAD
-  filteredPersons: any;
-  filteredSpecialities: any;
-  filteredStructures: any;
-  toHighlight: string = '';
-  //currentFilteredOptions:any;
-  
-  @Input() data : any;
-  @Output() newItemEvent = new EventEmitter<any>();
-  @ViewChild(MatAutocompleteTrigger) matAutocomplete: any;
 
-=======
   locations : Location[] = [];
   filteredPersons: any;
   filteredSpecialities: any;
@@ -57,7 +42,6 @@ export class SearchBarComponent implements OnInit {
   @Output() newItemEvent = new EventEmitter<any>();
   @ViewChild(MatAutocompleteTrigger) matAutocomplete: any;
 
->>>>>>> ZoneOuBranche
   
   constructor() { 
 
@@ -76,14 +60,13 @@ export class SearchBarComponent implements OnInit {
       map(value => value.length >= 1 ? this._filter(value || '', this.structures, 2): []),
     );
 
-<<<<<<< HEAD
-=======
+
     this.filteredLocation = this.searchLocationControl.valueChanges.pipe(
       startWith(''),
       map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations): []),
     );
 
->>>>>>> ZoneOuBranche
+
     /*this.filteredPersons.subscribe((options:any) => {
       this.currentFilteredOptions = options;
     });*/
@@ -95,10 +78,9 @@ export class SearchBarComponent implements OnInit {
     this.persons = this.data[0];
     this.specialities = this.data[1];
     this.structures = this.data[2];
-<<<<<<< HEAD
-=======
+
     this.locations = this.data[3];
->>>>>>> ZoneOuBranche
+
   }
 
   private _filter(value: string, data : any, type : number): any[] {
@@ -118,13 +100,6 @@ export class SearchBarComponent implements OnInit {
   
   onSearch() {
     //this.newItemEvent.emit(this.currentFilteredOptions);
-<<<<<<< HEAD
-      this.getData(this.searchTerm);
-  }
-
-  onOptionSelected(event : any): void { 
-    this.getData(event.option.value);
-=======
       this.getData(this.searchTerm, this.location);
   }
 
@@ -141,7 +116,7 @@ export class SearchBarComponent implements OnInit {
       this.searchLocationControl.disable();
     }
     this.getData(selectedValue, this.location);
->>>>>>> ZoneOuBranche
+
   }
 
   onEnter() {
@@ -151,11 +126,9 @@ export class SearchBarComponent implements OnInit {
     this.onSearch();
   }
 
-<<<<<<< HEAD
-  getData(dataOption:any) {
-=======
+
   getData(dataOption:any, locationOption:any) {
->>>>>>> ZoneOuBranche
+
     var item : any = {
       whoAreaUsed: true ,
       whereAreaUsed: false,
@@ -167,13 +140,11 @@ export class SearchBarComponent implements OnInit {
       idSpeciality:-1,
       selectedHospitalData: {}
     }
-<<<<<<< HEAD
-=======
     if(locationOption) {
       item.whereSearchText = locationOption;
       item.whereAreaUsed = true;
     }
->>>>>>> ZoneOuBranche
+
     if(typeof(dataOption) === 'string') {
       item.whoSearchText = dataOption;
     } else {
@@ -208,8 +179,7 @@ export class SearchBarComponent implements OnInit {
   displayFn(option: any): string {
     return option ? option.name ? option.name : option.fullName : '';
   }
-<<<<<<< HEAD
-=======
+
 
   private _filterLocation(value: string, data: any): any[] {
     this.toHighlight = value;
@@ -295,5 +265,5 @@ clearQuiField(): void {
     this.isTypingOu = false;       // Reset the typing state
     this.searchControl.enable();   // Re-enable the "Qui" input
   }
->>>>>>> ZoneOuBranche
+
 }

@@ -54,13 +54,8 @@ export class AdavancedSearchComponent implements OnInit {
       this.advancedSearchService.getLocations(),
     ]).pipe(
       tap({
-<<<<<<< HEAD
-        next: ([persons, specialities, structures]) => {
-          this.combinedDatas = [persons, specialities, structures];
-=======
         next: ([persons, specialities, structures, locations]) => {
           this.combinedDatas = [persons, specialities, structures, locations];
->>>>>>> ZoneOuBranche
 
           const combinedData = [
             ...structures.map(structure => ({
