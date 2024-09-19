@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
 
 @Component({
@@ -25,6 +26,7 @@ export class SearchBarComponent implements OnInit {
   
   @Input() data : any;
   @Output() newItemEvent = new EventEmitter<any>();
+  @ViewChild(MatAutocompleteTrigger) matAutocomplete: any;
 
   
   constructor() { 
@@ -79,6 +81,13 @@ export class SearchBarComponent implements OnInit {
 
   onOptionSelected(event : any): void { 
     this.getData(event.option.value);
+  }
+
+  onEnter() {
+    if (this.matAutocomplete.panelOpen) {
+      this.matAutocomplete.closePanel(); 
+    }
+    this.onSearch();
   }
 
   getData(dataOption:any) {

@@ -64,8 +64,8 @@ button {
 
 .container {
   display: flex;
-  align-items: center; /* Vertically center items */
-  gap: 10px; /* Space between the icon and content */
+  align-items: center; 
+  gap: 10px; 
   padding-left: 0;
 }
 
@@ -73,10 +73,10 @@ button {
   display: inline-block;
 }
 #icon {
-  font-size: 20px; /* Adjust size as needed */
-  color: #333; /* Adjust color as needed */
-  line-height: 1; /* Adjust line-height if needed */
-  vertical-align: middle; /* Ensure icon is vertically centered with text */
+  font-size: 20px; 
+  color: #333; 
+  line-height: 1; 
+  vertical-align: middle; 
 }
 
 .mat-option span {
@@ -91,9 +91,9 @@ button {
 	font-size: 10px;
 	z-index: 1;
 	margin: 0.05rem 0 0;
-  overflow-wrap: break-word; /* Break long words */
-            word-break: break-word; /* Alternative option */
-            white-space: normal; /* Ensure normal text wrapping */
+  overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal; 
 }
 
 ::-webkit-scrollbar {

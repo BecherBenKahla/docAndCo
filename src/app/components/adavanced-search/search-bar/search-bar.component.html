@@ -2,7 +2,7 @@
      <mat-form-field appearance="outline" fxFlex="50%">
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl" [matAutocomplete]="auto" >
+        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl" [matAutocomplete]="auto" (keydown.enter)="onEnter()">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
             <mat-option *ngFor="let option of (filteredSpecialities | async) | alphabeticSpecialty" [value]="option" id="matOptions">
                 <div class="container">    
