@@ -1,12 +1,16 @@
-import { AlphabeticPipe } from './alphabetic.pipe';
+import { AlphabeticPipeSpecialty } from './alphabetic.pipe';
+import { AlphabeticPipePerson } from './alphabetic.pipe';
 
 describe('AlphabeticPipe', () => {
   it('create an instance', () => {
-    const pipe = new AlphabeticPipe();
+    const pipe = new AlphabeticPipeSpecialty();
     expect(pipe).toBeTruthy();
   });
-<<<<<<< HEAD
 });
-=======
+
+describe('AlphabeticPipe', () => {
+  it('create an instance', () => {
+    const pipe = new AlphabeticPipePerson();
+    expect(pipe).toBeTruthy();
+  });
 });
->>>>>>> ca-advanced-search

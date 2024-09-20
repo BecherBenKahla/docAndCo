@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { combineLatest, finalize, first, tap } from 'rxjs';
-import { combineLatest, finalize, first, tap } from 'rxjs';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
 
 export interface Chip {

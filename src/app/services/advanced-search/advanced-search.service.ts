@@ -40,11 +40,7 @@ export class AdvancedSearchService {
           postalCode: structure.postalCode ? structure.postalCode.toString() : '',
           city: structure.city || ''
         }));
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> ca-advanced-search
         // Remove duplicates by filtering unique postalCode and city combinations
         const uniqueLocations = locations.filter((location, index, self) =>
           index === self.findIndex(
@@ -55,8 +51,4 @@ export class AdvancedSearchService {
       })
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ca-advanced-search

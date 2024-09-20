@@ -5,13 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AlphabeticPipePerson implements PipeTransform {
 
-<<<<<<< HEAD
-  transform(data : any): any {
-    return data.sort((a:any, b:any) => 
-=======
   transform(data: any): any {
     return data.sort((a: any, b: any) =>
->>>>>>> ca-advanced-search
       a.lastName.localeCompare(b.lastName) || a.firstName - b.firstName
     );
   }
@@ -21,19 +16,11 @@ export class AlphabeticPipePerson implements PipeTransform {
 @Pipe({
   name: 'alphabeticSpecialty'
 })
-export class AlphabeticPipePecialty implements PipeTransform {
-<<<<<<< HEAD
-  transform(data : any): any {
-    return data.sort((a:any, b:any) => 
-      a.name.localeCompare(b.name) 
-    );
-  }
-}
-=======
+export class AlphabeticPipeSpecialty implements PipeTransform {
+  
   transform(data: any): any {
     return data.sort((a: any, b: any) =>
       a.name.localeCompare(b.name)
     );
   }
 }
->>>>>>> ca-advanced-search

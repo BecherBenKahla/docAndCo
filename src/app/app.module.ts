@@ -12,13 +12,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
-<<<<<<< HEAD
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatDividerModule} from '@angular/material/divider';
-=======
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
->>>>>>> ca-advanced-search
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,15 +22,10 @@ import { AdavancedSearchComponent } from './components/adavanced-search/adavance
 import { SearchBarComponent } from './components/adavanced-search/search-bar/search-bar.component';
 import { HighlightPipe } from './common/pipes/highlight.pipe';
 import { AlphabeticPipePerson } from './common/pipes/alphabetic.pipe';
-import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
-<<<<<<< HEAD
+import { AlphabeticPipeSpecialty } from './common/pipes/alphabetic.pipe';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
-
-=======
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { CustomPaginator } from './common/translations/custom-mat-paginator-intl';
->>>>>>> ca-advanced-search
 
 @NgModule({
   declarations: [
@@ -44,11 +34,8 @@ import { CustomPaginator } from './common/translations/custom-mat-paginator-intl
     SearchBarComponent,
     HighlightPipe,
     AlphabeticPipePerson,
-    AlphabeticPipePecialty,
-<<<<<<< HEAD
+    AlphabeticPipeSpecialty,
     PersonDetailComponent
-=======
->>>>>>> ca-advanced-search
   ],
   imports: [
     BrowserModule,

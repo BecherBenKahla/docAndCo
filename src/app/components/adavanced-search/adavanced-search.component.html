@@ -27,21 +27,12 @@
             </div>
             <div fxLayout="row" class="space-between-records">
                 <mat-chip-list>
-<<<<<<< HEAD
-                    <mat-chip-list>
-                        <mat-chip *ngFor="let chip of chips" color="accent" removable (removed)="removeChip(chip)">
-                            {{ chip }}
-                            <mat-icon matChipRemove *ngIf="chip">cancel</mat-icon>
-                        </mat-chip>
-                    </mat-chip-list>
-=======
 
                     <mat-chip *ngFor="let chip of chips; let indx = index;" (removed)="removeChip(indx)">
                         {{ chip.name }}
                         <mat-icon matChipRemove *ngIf="chip">cancel</mat-icon>
                     </mat-chip>
 
->>>>>>> ca-advanced-search
                     <span class="spacer"></span>
                     <button *ngIf="chips.length > 0" mat-button color="primary" (click)="removeAllFilters()">Supprimer
                         tous
@@ -70,10 +61,6 @@
                     <td mat-cell *matCellDef="let element"> {{element.identite}} </td>
                 </ng-container>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ca-advanced-search
                 <ng-container matColumnDef="specialite">
                     <th mat-header-cell *matHeaderCellDef> Spécialité(s) </th>
                     <td mat-cell *matCellDef="let element"> {{element.specialite}} </td>
@@ -84,10 +71,6 @@
                     <td mat-cell *matCellDef="let element"> {{element.structure}} </td>
                 </ng-container>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ca-advanced-search
                 <ng-container matColumnDef="localisation">
                     <th mat-header-cell *matHeaderCellDef> Localisation </th>
                     <td mat-cell *matCellDef="let element"> {{element.localisation}} </td>
@@ -101,11 +84,6 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-<<<<<<< HEAD
-                        <button mat-icon-button class="btn-outline-success me-2">R</button>
-                        <button mat-icon-button class="me-2"><mat-icon>emoji_events</mat-icon></button>
-                        <button mat-icon-button class="me-2"><mat-icon>star_border</mat-icon></button>
-=======
                         <div style="display: flex;">
                             <button mat-icon-button class="btn-outline-success">
                                 <i id="R" class="fas fa-r"></i>
@@ -113,7 +91,6 @@
                             <button mat-icon-button><i id="trophy" class='fas fa-trophy'></i></button>
                             <button mat-icon-button><mat-icon>star_border</mat-icon></button>
                         </div>
->>>>>>> ca-advanced-search
                     </td>
                 </ng-container>
 
@@ -152,14 +129,9 @@
             </div>
         </div>
     </ng-container>
-<<<<<<< HEAD
-    <mat-paginator [ngStyle]="{'display': !showDetail ? 'block' : 'none'}" [pageSize]="5"
-        [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons itemsPerPageLabel="Données par page">
-=======
-
+    
     <mat-paginator [ngStyle]="{'display': !showDetail ? 'block' : 'none'}" [pageSize]="5"
         [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons itemsPerPageLabel="Données par page">
->>>>>>> ca-advanced-search
     </mat-paginator>
 </mat-card>
 

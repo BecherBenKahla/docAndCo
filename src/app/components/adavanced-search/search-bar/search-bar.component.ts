@@ -10,9 +10,7 @@ import { Location } from 'src/app/common/models/location.model';
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./search-bar.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class SearchBarComponent implements OnInit {
 

@@ -47,7 +47,6 @@ button {
 }
 
 .icon-style {
-<<<<<<< HEAD
     font-size: larger;
     position: relative;
     bottom: 4px;
@@ -60,39 +59,20 @@ button {
 .highlight {
   color: #17b7c7; 
   font-weight: bold; 
-=======
-  font-size: larger;
-  position: relative;
-  bottom: 4px;
-}
-
-.clearIcon {
-  cursor: pointer
-}
-
-.highlight {
-  color: #17b7c7;
-  font-weight: bold;
->>>>>>> ca-advanced-search
   text-decoration: underline;
 }
 
 .container {
   display: flex;
-<<<<<<< HEAD
   align-items: center; 
   gap: 10px; 
-=======
-  align-items: center;
-  gap: 10px;
->>>>>>> ca-advanced-search
   padding-left: 0;
 }
 
 .content {
   display: inline-block;
 }
-<<<<<<< HEAD
+
 #icon {
   font-size: 20px; 
   color: #333; 
@@ -113,33 +93,8 @@ button {
 	z-index: 1;
 	margin: 0.05rem 0 0;
   overflow-wrap: break-word;
-            word-break: break-word;
-            white-space: normal; 
-=======
-
-#icon {
-  font-size: 20px;
-  color: #333;
-  line-height: 1;
-  vertical-align: middle;
-}
-
-.mat-option span {
-  font-size: 15px;
-  margin: 0;
-  line-height: 0.90rem;
-  position: relative;
-}
-
-.mat-option p {
-  position: relative;
-  font-size: 10px;
-  z-index: 1;
-  margin: 0.05rem 0 0;
-  overflow-wrap: break-word;
   word-break: break-word;
   white-space: normal;
->>>>>>> ca-advanced-search
 }
 
 ::-webkit-scrollbar {

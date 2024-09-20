@@ -5,8 +5,4 @@ describe('HighlightPipe', () => {
     const pipe = new HighlightPipe();
     expect(pipe).toBeTruthy();
   });
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> ca-advanced-search
