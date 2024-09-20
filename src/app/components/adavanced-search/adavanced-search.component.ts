@@ -1,4 +1,3 @@
-import { Structure } from 'src/app/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,9 +27,9 @@ export class AdavancedSearchComponent implements OnInit {
   displayedColumns: string[] = ['profil', 'identite', 'specialite', 'structure', 'localisation', 'distance', 'actions'];
   dataSource: MatTableDataSource<any>;
   data: any[] = [];
-  sortBy = 'lastName';
+  sortBy = '';
   isLoading = true;
-  chips: string[] = [];
+  chips: Chip[] = [];
   showHospitals: boolean = true;
   showReceivers: boolean = true;
   showPractitioners: boolean = true;
@@ -44,15 +43,15 @@ export class AdavancedSearchComponent implements OnInit {
     location: "",
     email: ""
   };
-  whoAreaUsed: boolean = true;
-  whereAreaUsed: boolean = false;
-  sectionUsed: string = "";
   combinedDatas: any;
+  persons: any[] = [];
+  specialities: any[] = [];
+  hospitals: any[] = [];
+  filteredData: any[] = [];
 
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   constructor(private advancedSearchService: AdvancedSearchService) {
-    this.dataSource = new MatTableDataSource(this.combinedDatas);
     this.dataSource = new MatTableDataSource(this.combinedDatas);
   }
 
@@ -66,48 +65,46 @@ export class AdavancedSearchComponent implements OnInit {
       this.advancedSearchService.getSpecialities(),
       this.advancedSearchService.getStructures(),
       this.advancedSearchService.getLocations(),
-      this.advancedSearchService.getLocations(),
     ]).pipe(
       tap({
         next: ([persons, specialities, structures, locations]) => {
           this.combinedDatas = [persons, specialities, structures, locations];
-
-          const combinedData = [
+          this.persons = [...persons.map(person => ({
+            profil: 'person',
+            identite: `${person.lastName} ${person.firstName} `,
+            firstName: person.firstName,
+            lastName: person.lastName,
+            specialite: person.medicalSpecialtyNames,
+            structure: person.medicalStructureName,
+            localisation: person.medicalStructurePostalCode + ', ' + person.medicalStructureCity,
+            distance: `132 km`,
+            actions: 'View'
+          }))];
+          this.specialities = [...specialities.map(speciality => ({
+            profil: 'speciality',
+            identite: speciality.name,
+            specialite: "",
+            specialiteId: speciality.medicalSpecialtyId,
+            structure: "",
+            localisation: "",
+            distance: `128 km`,
+            actions: 'View'
+          })),]
+          this.hospitals = [
             ...structures.map(structure => ({
               profil: 'hospital',
               identite: structure.name,
               specialite: structure.medicalSpecialties?.length + ' spécialité(s) disponible(s)',
               specialities: structure.medicalSpecialties,
               structure: structure.name,
-              localisation: structure.street,
+              localisation: structure.postalCode + ', ' + structure.city,
               distance: `152 km`,
               actions: 'View'
-            })),
-            ...persons.map(person => ({
-              profil: 'person',
-              identite: `${person.lastName} ${person.firstName} `,
-              firstName: person.firstName,
-              lastName: person.lastName,
-              specialite: person.medicalSpecialtyNames,
-              structure: person.medicalStructureName,
-              localisation: person.medicalStructurePostalCode + '' + person.medicalStructureStreet,
-              distance: `132 km`,
-              actions: 'View'
-            })),
-            ...specialities.map(speciality => ({
-              profil: 'speciality',
-              identite: speciality.name,
-              specialite: speciality.name,
-              specialiteId: speciality.medicalSpecialtyId,
-              structure: "speciality.structure",
-              localisation: " speciality.location",
-              distance: `128 km`,
-              actions: 'View'
-            })),
+            }))];
 
-          ];
-          this.data = combinedData;
-          this.dataSource = new MatTableDataSource(combinedData);
+          this.data = [...this.hospitals, ...this.persons, ...this.specialities];
+          this.filteredData = this.data;
+          this.dataSource = new MatTableDataSource(this.data);
           this.dataSource.paginator = this.paginator;
         }
       }),
@@ -115,100 +112,141 @@ export class AdavancedSearchComponent implements OnInit {
     ).subscribe();
   }
 
-  updateChips(chips: string[], searchTerm: string, location: string): string[] {
+  updateChips(chips: Chip[], searchTerm: string, location: string, item: Chip): Chip[] {
     let updatedChips = [...chips];
 
-    if (searchTerm && !updatedChips.includes(searchTerm)) {
-      updatedChips = [...updatedChips, searchTerm];
+    if (searchTerm) {
+      const searchTermExists = updatedChips.some(chip => chip.whoSearchText === searchTerm);
+      if (!searchTermExists) {
+        updatedChips.push({ ...item, name: searchTerm });
+      }
     }
 
-    if (location && !updatedChips.includes(location)) {
-      updatedChips = [...updatedChips, location];
+    if (location) {
+      const locationExists = updatedChips.some(chip => chip.whereSearchText === location);
+      if (!locationExists) {
+        updatedChips.push({ ...item, name: location });
+      }
     }
 
     return updatedChips;
   }
 
-  removeChip(chip: string) {
-    console.log('Chip supprimé');
-    const index = this.chips.indexOf(chip);
-    if (index >= 0) {
-      this.chips.splice(index, 1);
-    }
+
+  removeChip(index: number) {
+    this.chips.splice(index, 1);
     this.applyChipsFilter();
   }
 
   applyChipsFilter(item: any = {}): void {
-    if (this.chips.length === 0) {
-      this.dataSource.filter = '';
-      this.applySort();
-      return;
-    }
+    let datas = this.data;
+    let filteredStructures = this.hospitals;
+    let filteredPersons = this.persons;
+    let filteredSpecialities = this.specialities;
+    let specialitySectionUsed = false;
+    let sdsSectionUsed = false;
+    this.sortBy = ""
+    this.chips.forEach(chip => {
+      if (chip.sectionUsed === "SPECIALTIE") {
+        specialitySectionUsed = true;
+        this.showHospitals = true;
+        this.showPractitioners = false;
+        this.showReceivers = true;
+        this.sortBy = "distance"
+        filteredStructures = filteredStructures.filter(structure =>
+          structure.specialities && structure.specialities.includes(chip.idSpeciality)
+        );
+        filteredPersons = filteredPersons.filter(person =>
+          person.specialite && person.specialite.includes(chip.whoSearchText)
+        );
+        datas = [...filteredStructures, ...filteredPersons];
+      }
 
-    const combinedFilter = this.chips.join(' ').toLowerCase();
+      if (chip.whereAreaUsed) {
+        this.showHospitals = false;
+        this.showPractitioners = false;
+        this.showReceivers = true;
+        this.sortBy = "distance";
+        filteredPersons = filteredPersons.filter(person =>
+          person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
+        );
+        datas = [...filteredPersons];
+        if (specialitySectionUsed) {
+          this.showHospitals = true;
+          filteredStructures = filteredStructures.filter(structure =>
+            structure.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
+          );
+          filteredPersons = filteredPersons.filter(person =>
+            person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
+          );
+          datas = [...filteredStructures, ...filteredPersons];
+        }
+      }
 
-    this.showHospitals = false;
-    this.showPractitioners = false;
-    this.showReceivers = true;
-    this.sortBy = "distance";
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      return data.identite.toLowerCase().includes(filter) ||
-        data.specialite.toLowerCase().includes(filter) ||
-        data.structure.toLowerCase().includes(filter);
-    };
+      if (chip.sectionUsed === "SDS") {
+        sdsSectionUsed = true;
+        this.showHospitals = false;
+        this.showPractitioners = true;
+        this.showReceivers = true;
+        this.sortBy = "lastName";
+        filteredSpecialities = filteredSpecialities.filter(specialty =>
+          specialty.specialiteId && chip.selectedHospitalData.medicalSpecialties.includes(specialty.specialiteId)
+        );
+        filteredPersons = filteredPersons.filter(person =>
+          person.structure && person.structure.includes(chip.whoSearchText)
+        );
+        datas = [...filteredSpecialities, ...filteredPersons];
+      }
 
-    if (item.sectionUsed == "SPECIALTIE") {
-      this.showHospitals = true;
+      if (specialitySectionUsed && item.sectionUsed == "") {
+        filteredStructures = filteredStructures.filter(structure =>
+          structure.identite.toLowerCase().includes(item.whoSearchText)
+        );
+        filteredPersons = filteredPersons.filter(person =>
+          person.identite && (person.identite.toLowerCase().includes(item.whoSearchText))
+        );
+        datas = [...filteredStructures, ...filteredPersons];
+      }
+
+      if (sdsSectionUsed && item.sectionUsed == "") {
+        this.showHospitals = false;
+        this.showPractitioners = true;
+        this.showReceivers = true;
+        this.sortBy = "lastName"
+        filteredSpecialities = filteredSpecialities.filter(specialty =>
+          specialty.identite && specialty.identite.toLowerCase().includes(item.whoSearchText)
+        );
+        filteredPersons = filteredPersons.filter(person =>
+          person.identite && (person.identite.toLowerCase().includes(item.whoSearchText)) ||
+          person.specialite && (person.specialite.toLowerCase().includes(item.whoSearchText))
+        );
+        datas = [...filteredSpecialities, ...filteredPersons];
+      }
+    });
+
+    if (this.chips.length === 0 && !this.isObjectEmpty(item)) {
+      this.showHospitals = false;
       this.showPractitioners = false;
       this.showReceivers = true;
-      this.sortBy = "distance"
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-
-        if (data.profil === 'hospital') {
-          if (item.whereAreaUsed) {
-            return data.specialities && data.specialities.includes(item.specialtyId) || data.localisation && data.localisation.includes(item.whereSearchText);
-          }
-          return data.specialities && data.specialities.includes(item.specialtyId);
-        }
-
-        if (data.profil === 'person') {
-          if (item.whereAreaUsed) {
-            return data.specialite && data.specialite.includes(item.whoSearchText) || data.localisation && data.localisation.includes(item.whereSearchText);
-          }
-          return data.specialite && data.specialite.includes(item.whoSearchText);
-        }
-
-        return false;
-      };
-    }
-    if (item.sectionUsed == "SDS") {
-      this.showHospitals = false;
-      this.showPractitioners = true;
-      this.showReceivers = true;
-      this.sortBy = "lastName"
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-        if (data.profil === 'person') {
-          return data.structure && data.structure.includes(item.whoSearchText);
-        }
-
-        return false;
-      };
+      this.sortBy = "distance";
+      filteredPersons = filteredPersons.filter(person =>
+        person.firstName.toLowerCase().startsWith(item.whoSearchText.toLowerCase()) ||
+        person.lastName.toLowerCase().startsWith(item.whoSearchText.toLowerCase()) ||
+        person.specialite && (person.specialite.toLowerCase().includes(item.whoSearchText)) ||
+        person.structure && (person.structure.toLowerCase().includes(item.whoSearchText))
+      );
+      datas = [...filteredPersons];
     }
 
-    this.dataSource.filter = combinedFilter.trim();
-    this.dataSource.paginator = this.paginator;
+    this.filteredData = datas;
+    this.dataSource.data = datas;
     this.applySort();
-    this.showData()
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   removeAllFilters(): void {
-    console.log('Supprimer tous les filtres');
     this.chips = [];
-    this.dataSource.filter = '';
+    this.dataSource.data = this.data;
+    this.filteredData = this.data;
     this.showHospitals = true;
     this.showPractitioners = true;
     this.showReceivers = true;
@@ -236,6 +274,8 @@ export class AdavancedSearchComponent implements OnInit {
         case 'distance':
           return this.compareNumbers(this.extractNumber(a.distance), this.extractNumber(b.distance));
         default:
+          this.dataSource = new MatTableDataSource(this.data);
+          this.dataSource.paginator = this.paginator;
           return 0;
       }
     });
@@ -258,7 +298,7 @@ export class AdavancedSearchComponent implements OnInit {
   }
 
   showData() {
-    const filteredData = this.data.filter(item => {
+    const filteredData = this.filteredData.filter(item => {
       if (this.showHospitals && item.profil === 'hospital') {
         return true;
       }
@@ -272,28 +312,29 @@ export class AdavancedSearchComponent implements OnInit {
     });
 
     this.dataSource.data = filteredData.length ? filteredData : [];
-    this.applySort();
-    this.dataSource.paginator = this.paginator;
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
   getItemsFromChild(items: any) {
-    console.log(items)
     this.showDetail = items.showDetail ? items.showDetail : false;
     if (!this.showDetail) {
-      this.chips = this.updateChips(this.chips, items.whoSearchText, items.whereSearchText);
+      if (items.sectionUsed != "")
+        this.chips = this.updateChips(this.chips, items.whoSearchText, items.whereSearchText, items);
+
+      if (items.whereSearchText && items.whereSearchText != "")
+        this.chips = this.updateChips(this.chips, items.whoSearchText, items.whereSearchText, items);
+
     } else {
       this.chips = [];
       this.dataPerson = items.dataPerson ? items.dataPerson : {};
     }
-    this.whoAreaUsed = items.whoAreaUsed;
-    this.whereAreaUsed = items.whereAreaUsed;
-    this.sectionUsed = items.sectionUsed;
-
     this.applyChipsFilter(items);
-    console.log(this.chips)
   }
 
+  isObjectEmpty = (objectName: any = {}) => {
+    return Object.keys(objectName).length === 0
+  }
 }

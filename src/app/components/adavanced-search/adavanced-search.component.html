@@ -61,6 +61,7 @@
                     <td mat-cell *matCellDef="let element"> {{element.identite}} </td>
                 </ng-container>
 
+
                 <ng-container matColumnDef="specialite">
                     <th mat-header-cell *matHeaderCellDef> Spécialité(s) </th>
                     <td mat-cell *matCellDef="let element"> {{element.specialite}} </td>
@@ -70,6 +71,7 @@
                     <th mat-header-cell *matHeaderCellDef> Structure de soin </th>
                     <td mat-cell *matCellDef="let element"> {{element.structure}} </td>
                 </ng-container>
+
 
                 <ng-container matColumnDef="localisation">
                     <th mat-header-cell *matHeaderCellDef> Localisation </th>
@@ -129,7 +131,7 @@
             </div>
         </div>
     </ng-container>
-    
+
     <mat-paginator [ngStyle]="{'display': !showDetail ? 'block' : 'none'}" [pageSize]="5"
         [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons itemsPerPageLabel="Données par page">
     </mat-paginator>
