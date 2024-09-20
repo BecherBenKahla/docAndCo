@@ -5,4 +5,8 @@ describe('AlphabeticPipe', () => {
     const pipe = new AlphabeticPipe();
     expect(pipe).toBeTruthy();
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> ca-advanced-search

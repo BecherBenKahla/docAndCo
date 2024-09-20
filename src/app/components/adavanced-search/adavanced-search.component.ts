@@ -3,7 +3,21 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { combineLatest, finalize, first, tap } from 'rxjs';
+import { combineLatest, finalize, first, tap } from 'rxjs';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
+
+export interface Chip {
+  name: string;
+  whoAreaUsed: boolean,
+  whereAreaUsed: boolean,
+  whoSearchText: string,
+  whereSearchText: string,
+  sectionUsed: string,
+  showDetail: boolean,
+  dataPerson: any;
+  idSpeciality: number;
+  selectedHospitalData: any;
+}
 
 @Component({
   selector: 'app-adavanced-search',
@@ -40,6 +54,7 @@ export class AdavancedSearchComponent implements OnInit {
 
   constructor(private advancedSearchService: AdvancedSearchService) {
     this.dataSource = new MatTableDataSource(this.combinedDatas);
+    this.dataSource = new MatTableDataSource(this.combinedDatas);
   }
 
   ngOnInit(): void {
@@ -51,6 +66,7 @@ export class AdavancedSearchComponent implements OnInit {
       this.advancedSearchService.getPersons(),
       this.advancedSearchService.getSpecialities(),
       this.advancedSearchService.getStructures(),
+      this.advancedSearchService.getLocations(),
       this.advancedSearchService.getLocations(),
     ]).pipe(
       tap({
