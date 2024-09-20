@@ -60,7 +60,15 @@
                     <th mat-header-cell *matHeaderCellDef> Identité </th>
                     <td mat-cell *matCellDef="let element"> {{element.identite}} </td>
                 </ng-container>
+                <ng-container matColumnDef="identite">
+                    <th mat-header-cell *matHeaderCellDef> Identité </th>
+                    <td mat-cell *matCellDef="let element"> {{element.identite}} </td>
+                </ng-container>
 
+                <ng-container matColumnDef="specialite">
+                    <th mat-header-cell *matHeaderCellDef> Spécialité(s) </th>
+                    <td mat-cell *matCellDef="let element"> {{element.specialite}} </td>
+                </ng-container>
                 <ng-container matColumnDef="specialite">
                     <th mat-header-cell *matHeaderCellDef> Spécialité(s) </th>
                     <td mat-cell *matCellDef="let element"> {{element.specialite}} </td>
@@ -70,12 +78,24 @@
                     <th mat-header-cell *matHeaderCellDef> Structure de soin </th>
                     <td mat-cell *matCellDef="let element"> {{element.structure}} </td>
                 </ng-container>
+                <ng-container matColumnDef="structure">
+                    <th mat-header-cell *matHeaderCellDef> Structure de soin </th>
+                    <td mat-cell *matCellDef="let element"> {{element.structure}} </td>
+                </ng-container>
 
                 <ng-container matColumnDef="localisation">
                     <th mat-header-cell *matHeaderCellDef> Localisation </th>
                     <td mat-cell *matCellDef="let element"> {{element.localisation}} </td>
                 </ng-container>
+                <ng-container matColumnDef="localisation">
+                    <th mat-header-cell *matHeaderCellDef> Localisation </th>
+                    <td mat-cell *matCellDef="let element"> {{element.localisation}} </td>
+                </ng-container>
 
+                <ng-container matColumnDef="distance">
+                    <th mat-header-cell *matHeaderCellDef> Distance </th>
+                    <td mat-cell *matCellDef="let element"> {{element.distance}} </td>
+                </ng-container>
                 <ng-container matColumnDef="distance">
                     <th mat-header-cell *matHeaderCellDef> Distance </th>
                     <td mat-cell *matCellDef="let element"> {{element.distance}} </td>

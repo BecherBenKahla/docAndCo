@@ -1,6 +1,7 @@
 mat-card {
     width: 100%;
     max-width: 600px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
@@ -19,9 +20,14 @@ mat-card {
 .mat-row:hover {
     background-color: #f5f5f5;
     cursor: pointer;
+    background-color: #f5f5f5;
+    cursor: pointer;
 }
 
 .mat-table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -32,6 +38,7 @@ mat-card {
 }
 
 .argent {
+    fill: #424242 !important;
     fill: #424242 !important;
 }
 
