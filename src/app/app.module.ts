@@ -24,7 +24,9 @@ import { HighlightPipe } from './common/pipes/highlight.pipe';
 import { AlphabeticPipePerson } from './common/pipes/alphabetic.pipe';
 import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
 import { PersonDetailComponent } from './components/adavanced-search/person-detail/person-detail.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { CustomPaginator } from './common/translations/custom-mat-paginator-intl';
+
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatProgressSpinnerModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: CustomPaginator() }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,6 +16,18 @@ export interface Chip {
   idSpeciality: number;
   selectedHospitalData: any;
 }
+export interface dataPerson {
+  name: string;
+  whoAreaUsed: boolean,
+  whereAreaUsed: boolean,
+  whoSearchText: string,
+  whereSearchText: string,
+  sectionUsed: string,
+  showDetail: boolean,
+  dataPerson: any;
+  idSpeciality: number;
+  selectedHospitalData: any;
+}
 
 @Component({
   selector: 'app-adavanced-search',
@@ -137,27 +149,29 @@ export class AdavancedSearchComponent implements OnInit {
   }
 
   applyChipsFilter(item: any = {}): void {
-    let filtredDatas = this.data;
+    let filteredData = this.data;
     let filteredStructures = this.hospitals;
     let filteredPersons = this.persons;
     let filteredSpecialities = this.specialities;
     let specialitySectionUsed = false;
     let sdsSectionUsed = false;
-    this.sortBy = ""
+    this.sortBy = "";
+
     this.chips.forEach(chip => {
       if (chip.sectionUsed === "SPECIALTIE") {
         specialitySectionUsed = true;
         this.showHospitals = true;
         this.showPractitioners = false;
         this.showReceivers = true;
-        this.sortBy = "distance"
+        this.sortBy = "distance";
+
         filteredStructures = filteredStructures.filter(structure =>
           structure.specialities && structure.specialities.includes(chip.idSpeciality)
         );
         filteredPersons = filteredPersons.filter(person =>
           person.specialite && person.specialite.includes(chip.whoSearchText)
         );
-        filtredDatas = [...filteredStructures, ...filteredPersons];
+        filteredData = [...filteredStructures, ...filteredPersons];
       }
 
       if (chip.whereAreaUsed) {
@@ -165,20 +179,17 @@ export class AdavancedSearchComponent implements OnInit {
         this.showPractitioners = false;
         this.showReceivers = true;
         this.sortBy = "distance";
+
         filteredPersons = filteredPersons.filter(person =>
           person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
         );
-        filtredDatas = [...filteredPersons];
+
         if (specialitySectionUsed) {
-          this.showHospitals = true;
           filteredStructures = filteredStructures.filter(structure =>
             structure.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
           );
-          filteredPersons = filteredPersons.filter(person =>
-            person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
-          );
-          filtredDatas = [...filteredStructures, ...filteredPersons];
         }
+        filteredData = [...filteredStructures, ...filteredPersons];
       }
 
       if (chip.sectionUsed === "SDS") {
@@ -187,38 +198,40 @@ export class AdavancedSearchComponent implements OnInit {
         this.showPractitioners = true;
         this.showReceivers = true;
         this.sortBy = "lastName";
+
         filteredSpecialities = filteredSpecialities.filter(specialty =>
           specialty.specialiteId && chip.selectedHospitalData.medicalSpecialties.includes(specialty.specialiteId)
         );
         filteredPersons = filteredPersons.filter(person =>
           person.structure && person.structure.includes(chip.whoSearchText)
         );
-        filtredDatas = [...filteredSpecialities, ...filteredPersons];
+        filteredData = [...filteredSpecialities, ...filteredPersons];
       }
 
-      if (specialitySectionUsed && item.sectionUsed == "") {
+      if (specialitySectionUsed && item.sectionUsed === "") {
         filteredStructures = filteredStructures.filter(structure =>
           structure.identite.toLowerCase().includes(item.whoSearchText)
         );
         filteredPersons = filteredPersons.filter(person =>
-          person.identite && (person.identite.toLowerCase().includes(item.whoSearchText))
+          person.identite && person.identite.toLowerCase().includes(item.whoSearchText)
         );
-        filtredDatas = [...filteredStructures, ...filteredPersons];
+        filteredData = [...filteredStructures, ...filteredPersons];
       }
 
-      if (sdsSectionUsed && item.sectionUsed == "") {
+      if (sdsSectionUsed && item.sectionUsed === "") {
         this.showHospitals = false;
         this.showPractitioners = true;
         this.showReceivers = true;
-        this.sortBy = "lastName"
+        this.sortBy = "lastName";
+
         filteredSpecialities = filteredSpecialities.filter(specialty =>
           specialty.identite && specialty.identite.toLowerCase().includes(item.whoSearchText)
         );
         filteredPersons = filteredPersons.filter(person =>
-          person.identite && (person.identite.toLowerCase().includes(item.whoSearchText)) ||
-          person.specialite && (person.specialite.toLowerCase().includes(item.whoSearchText))
+          person.identite && person.identite.toLowerCase().includes(item.whoSearchText) ||
+          person.specialite && person.specialite.toLowerCase().includes(item.whoSearchText)
         );
-        filtredDatas = [...filteredSpecialities, ...filteredPersons];
+        filteredData = [...filteredSpecialities, ...filteredPersons];
       }
     });
 
@@ -227,17 +240,20 @@ export class AdavancedSearchComponent implements OnInit {
       this.showPractitioners = false;
       this.showReceivers = true;
       this.sortBy = "distance";
+
       filteredPersons = filteredPersons.filter(person =>
         person.firstName.toLowerCase().startsWith(item.whoSearchText.toLowerCase()) ||
         person.lastName.toLowerCase().startsWith(item.whoSearchText.toLowerCase()) ||
-        person.specialite && (person.specialite.toLowerCase().includes(item.whoSearchText)) ||
-        person.structure && (person.structure.toLowerCase().includes(item.whoSearchText))
+        person.specialite && person.specialite.toLowerCase().includes(item.whoSearchText) ||
+        person.structure && person.structure.toLowerCase().includes(item.whoSearchText)
       );
-      filtredDatas = [...filteredPersons];
+      filteredData = [...filteredPersons];
     }
-    this.dataSource.data = filtredDatas;
+
+    this.dataSource.data = filteredData;
     this.applySort();
   }
+
 
   removeAllFilters(): void {
     this.chips = [];

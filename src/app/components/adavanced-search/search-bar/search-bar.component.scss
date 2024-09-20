@@ -65,9 +65,7 @@ button {
 .container {
   display: flex;
   align-items: center;
-  /* Vertically center items */
   gap: 10px;
-  /* Space between the icon and content */
   padding-left: 0;
 }
 
@@ -77,13 +75,9 @@ button {
 
 #icon {
   font-size: 20px;
-  /* Adjust size as needed */
   color: #333;
-  /* Adjust color as needed */
   line-height: 1;
-  /* Adjust line-height if needed */
   vertical-align: middle;
-  /* Ensure icon is vertically centered with text */
 }
 
 .mat-option span {
@@ -99,11 +93,8 @@ button {
   z-index: 1;
   margin: 0.05rem 0 0;
   overflow-wrap: break-word;
-  /* Break long words */
   word-break: break-word;
-  /* Alternative option */
   white-space: normal;
-  /* Ensure normal text wrapping */
 }
 
 ::-webkit-scrollbar {
@@ -116,4 +107,25 @@ button {
   border-radius: 9999px;
   background-color: #AAAAAA;
   cursor: pointer;
+}
+
+.mat-option .container .content #R {
+  position: relative;
+  font-size: 6px;
+  border-radius: 50%;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: rgb(69, 158, 114);
+  border: 1px solid rgb(69, 158, 114);
+  margin-right: 3px;
+  top: -2px;
+}
+
+.mat-option .container .content #trophy {
+  position: relative;
+  font-size: 8px;
+  color: rgb(209, 180, 14);
+  top: -2px;
 }

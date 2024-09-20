@@ -27,12 +27,12 @@
             </div>
             <div fxLayout="row" class="space-between-records">
                 <mat-chip-list>
-                    <mat-chip-list>
-                        <mat-chip *ngFor="let chip of chips" color="accent" removable (removed)="removeChip(chip)">
-                            {{ chip }}
-                            <mat-icon matChipRemove *ngIf="chip">cancel</mat-icon>
-                        </mat-chip>
-                    </mat-chip-list>
+
+                    <mat-chip *ngFor="let chip of chips; let indx = index;" (removed)="removeChip(indx)">
+                        {{ chip.name }}
+                        <mat-icon matChipRemove *ngIf="chip">cancel</mat-icon>
+                    </mat-chip>
+
                     <span class="spacer"></span>
                     <button *ngIf="chips.length > 0" mat-button color="primary" (click)="removeAllFilters()">Supprimer
                         tous
@@ -84,9 +84,13 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button class="btn-outline-success me-2">R</button>
-                        <button mat-icon-button class="me-2"><mat-icon>emoji_events</mat-icon></button>
-                        <button mat-icon-button class="me-2"><mat-icon>star_border</mat-icon></button>
+                        <div style="display: flex;">
+                            <button mat-icon-button class="btn-outline-success">
+                                <i id="R" class="fas fa-r"></i>
+                            </button>
+                            <button mat-icon-button><i id="trophy" class='fas fa-trophy'></i></button>
+                            <button mat-icon-button><mat-icon>star_border</mat-icon></button>
+                        </div>
                     </td>
                 </ng-container>
 
