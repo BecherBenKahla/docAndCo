@@ -2,9 +2,10 @@
      <mat-form-field appearance="outline" fxFlex="50%">
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl" [matAutocomplete]="auto" (keydown.enter)="onEnter()">
+        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl" [matAutocomplete]="auto" 
+        (keydown.enter)="onEnter()" (input)="onQuiInputChange()">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of (filteredSpecialities | async) | alphabeticSpecialty" [value]="option" id="matOptions">
+            <mat-option *ngFor="let option of (filteredSpecialities | async)" [value]="option" id="matOptions">
                 <div class="container">    
                     <i id="icon" class='fas fa-award'></i>   
                     <div class="content">
@@ -16,7 +17,7 @@
             </mat-option>
 
             <mat-divider></mat-divider>
-            <mat-option *ngFor="let option of (filteredPersons | async) | alphabeticPerson" [value]="option" style="height: 60px;">
+            <mat-option *ngFor="let option of (filteredPersons | async)" [value]="option" style="height: 60px;">
                <div class="container">               
                     <i id="icon" class='far fa-user'></i>
                     <div class="content">

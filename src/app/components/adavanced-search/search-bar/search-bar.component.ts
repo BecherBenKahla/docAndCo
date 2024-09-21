@@ -29,7 +29,6 @@ export class SearchBarComponent implements OnInit {
   filteredStructures: any;
   filteredLocation: any;
   toHighlight: string = '';
-  //currentFilteredOptions:any;
 
   // Variables to track if user is typing or has selected a value
   isTypingQui: boolean = false;
@@ -66,19 +65,12 @@ export class SearchBarComponent implements OnInit {
       map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations): []),
     );
 
-
-    /*this.filteredPersons.subscribe((options:any) => {
-      this.currentFilteredOptions = options;
-    });*/
-
-    
    }
 
   ngOnInit(): void {
     this.persons = this.data[0];
     this.specialities = this.data[1];
     this.structures = this.data[2];
-
     this.locations = this.data[3];
 
   }
@@ -86,7 +78,7 @@ export class SearchBarComponent implements OnInit {
   private _filter(value: string, data : any, type : number): any[] {
     this.toHighlight = value;
     const filterValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    return data.filter((option :any) => {
+    var result =  data.filter((option :any) => {
       var name = '';
       if(type == 0) {
         name = option.firstName.concat(' '+option.lastName);
@@ -96,17 +88,30 @@ export class SearchBarComponent implements OnInit {
       const words = name.split(/[\s-]+/).map((part:any) => part.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
       return words.some((word:any) => word.startsWith(filterValue))
     });
+     return result.sort((a: any, b: any) => {
+        if(type == 0) {
+          const lastNameComparison = a.lastName.localeCompare(b.lastName);
+          if (lastNameComparison === 0) {
+            return a.firstName.localeCompare(b.firstName);
+          }
+          return lastNameComparison;
+        } else {
+         return a.name.localeCompare(b.name)
+        }
+        
+      });
   }
   
   onSearch() {
-    //this.newItemEvent.emit(this.currentFilteredOptions);
-      this.getData(this.searchTerm, this.location);
+      if(this.searchTerm || this.location) {
+        this.getData(this.searchTerm, this.location);
+      }
   }
 
   onOptionSelected(event : any): void { 
     const selectedValue = event.option.value;
 
-    if (selectedValue && selectedValue.hasOwnProperty('name')) {
+    if (selectedValue && selectedValue.hasOwnProperty('passwordExpirationDelay')) {
       this.isSpecialtySelected = true;
       this.isQuiSelected = true;  // Something is selected
       this.searchLocationControl.enable(); // Enable "Où" field if a specialty is selected
@@ -128,52 +133,53 @@ export class SearchBarComponent implements OnInit {
 
 
   getData(dataOption:any, locationOption:any) {
+    var item : any = {}
 
-    var item : any = {
-      whoAreaUsed: true ,
-      whereAreaUsed: false,
-      whoSearchText: "",
-      whereSearchText: "",
-      sectionUsed: "",
-      showDetail:false,
-      dataPerson:{},
-      idSpeciality:-1,
-      selectedHospitalData: {}
+    if(dataOption) {
+      item.whoAreaUsed = true ;
+      item.sectionUsed = "",
+      item.showDetail = false;
+      item.dataPerson = {};
+      item.idSpeciality = -1;
+      item.selectedHospitalData = {};
+
+      if(typeof(dataOption) === 'string') {
+        item.whoSearchText = dataOption;
+      } else {
+        if(this.persons.includes(dataOption)) {
+          item.whoSearchText = dataOption.fullName;
+          item.sectionUsed = "PS";
+          item.showDetail = true;
+          item.dataPerson = {
+            firstName: dataOption.firstName,
+            lastName: dataOption.lastName,
+            speciality: dataOption.medicalSpecialtyNames,
+            rpps: dataOption.rpps,
+            phone: dataOption.phoneNumber,
+            location: dataOption.medicalStructurePostalCode + ', ' + dataOption.medicalStructureCity,
+            email: dataOption.email
+          }
+        } else if(this.specialities.includes(dataOption)) {
+            item.whoSearchText = dataOption.name;
+            item.sectionUsed = "SPECIALTIE";
+            item.idSpeciality = dataOption.medicalSpecialtyId;
+        } else {
+          item.whoSearchText = dataOption.name;
+          item.sectionUsed = "SDS",
+          item.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
+        }
+      }
     }
+
     if(locationOption) {
       item.whereSearchText = locationOption;
       item.whereAreaUsed = true;
     }
 
-    if(typeof(dataOption) === 'string') {
-      item.whoSearchText = dataOption;
-    } else {
-      if(this.persons.includes(dataOption)) {
-        item.whoSearchText = dataOption.fullName;
-        item.sectionUsed = "PS";
-        item.showDetail = true;
-        item.dataPerson = {
-          firstName: dataOption.firstName,
-          lastName: dataOption.lastName,
-          speciality: dataOption.medicalSpecialtyNames,
-          rpps: dataOption.rpps,
-          phone: dataOption.phoneNumber,
-          location: ' ... ',
-          email: dataOption.email
-        }
-      } else if(this.specialities.includes(dataOption)) {
-          item.whoSearchText = dataOption.name;
-          item.sectionUsed = "SPECIALTIE";
-          item.idSpeciality = dataOption.medicalSpecialtyId;
-      } else {
-        item.whoSearchText = dataOption.name;
-        item.sectionUsed = "SDS",
-        item.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
-      }
+    if(dataOption || locationOption) {
+      console.log(item)
+      this.newItemEvent.emit(item);
     }
-
-    //this.newItemEvent.emit(event.option.value);
-    this.newItemEvent.emit(item);
   }
 
   displayFn(option: any): string {
@@ -243,6 +249,11 @@ onQuiInputChange(): void {
   // Disable "Où" field while typing in "Qui"
   this.searchLocationControl.disable();
   this.location = ''; // Clear the "Où" field
+
+  if (this.searchTerm === '') {
+    this.searchLocationControl.enable();
+  }
+  
 }
 
 // Handle typing in Ou (Where) input
@@ -250,13 +261,18 @@ onOuInputChange(): void {
   // If the user starts typing in "Où" without selecting a specialty in "Qui"
   if (!this.isQuiSelected && !this.isSpecialtySelected) {
     this.searchTerm = ''; // Clear the "Qui" field if no selection was made
+    this.searchControl.disable()
+  }
+
+  if (this.location === '') {
+    this.searchControl.enable(); 
   }
 }
 
 
 clearQuiField(): void {
     this.searchTerm = '';  // Clear "Qui" if no valid selection
-  this.searchLocationControl.enable();
+    this.searchLocationControl.enable();
 }
   
   clearOuField(): void {
