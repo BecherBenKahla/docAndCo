@@ -30,7 +30,6 @@ export class SearchBarComponent implements OnInit {
   filteredStructures: any;
   filteredLocation: any;
   toHighlight: string = '';
-  //currentFilteredOptions:any;
 
   // Variables to track if user is typing or has selected a value
   isTypingQui: boolean = false;
@@ -59,10 +58,6 @@ export class SearchBarComponent implements OnInit {
       startWith(''),
       map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations) : []),
     );
-
-    /*this.filteredPersons.subscribe((options:any) => {
-      this.currentFilteredOptions = options;
-    });*/
   }
 
   ngOnInit(): void {
@@ -251,5 +246,13 @@ export class SearchBarComponent implements OnInit {
     this.isOuSelected = false;     // Reset the selected state
     this.isTypingOu = false;       // Reset the typing state
     this.searchControl.enable();   // Re-enable the "Qui" input
+  }
+
+  onSearchFocus() {
+    this.searchLocationControl.reset();
+  }
+
+  onLocationFocus() {
+    this.searchControl.reset();
   }
 }
