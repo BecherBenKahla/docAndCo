@@ -34,7 +34,8 @@ export class SearchBarComponent implements OnInit {
   isQuiSelected: boolean = false;
   isOuSelected: boolean = false;
   isSpecialtySelected: boolean = false;
-
+  isLocationSelected: boolean = false;
+  
   @Input() data: any;
   @Output() newItemEvent = new EventEmitter<any>();
   @ViewChild(MatAutocompleteTrigger) matAutocomplete: any;
@@ -93,7 +94,13 @@ export class SearchBarComponent implements OnInit {
 
   onSearch() {
     //this.newItemEvent.emit(this.currentFilteredOptions);
-    this.getData(this.searchTerm, this.location);
+    if (this.isLocationSelected) {
+      // Only pass location if it was selected from the autocomplete list
+      this.getData(this.searchTerm, this.location);
+    } else {
+      // If no location was selected, pass only searchTerm
+      this.getData(this.searchTerm, null);
+    }
   }
 
   onOptionSelected(event: any): void {
@@ -215,7 +222,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   locationSelected(event: any): void {
-
+    this.isLocationSelected = true;
     this.isOuSelected = true;
     this.isTypingOu = false;
     // The selected option's value
@@ -255,5 +262,6 @@ export class SearchBarComponent implements OnInit {
     this.isOuSelected = false;     // Reset the selected state
     this.isTypingOu = false;       // Reset the typing state
     this.searchControl.enable();   // Re-enable the "Qui" input
+    this.isLocationSelected = false;
   }
 }
