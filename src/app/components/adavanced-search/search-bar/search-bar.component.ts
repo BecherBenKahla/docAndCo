@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
+import { calculateDistance } from 'src/app/common/Utilities';
 import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
 
@@ -94,14 +95,34 @@ export class SearchBarComponent implements OnInit {
       const words = name.split(/[\s-]+/).map((part: any) => part.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
       return words.some((word: any) => word.startsWith(filterValue))
     });
+
+    const user = this.persons[0];
+
     return result.sort((a: any, b: any) => {
+      const hasCoordinates = user.medicalStructureLatitude !== null && user.medicalStructureLongitude !== null;
       if (type == 0) {
-        const lastNameComparison = a.lastName.localeCompare(b.lastName);
-        if (lastNameComparison === 0) {
-          return a.firstName.localeCompare(b.firstName);
+        if (hasCoordinates) {
+          const distanceA = calculateDistance(a.medicalStructureLatitude, a.medicalStructureLongitude, user);
+          const distanceB = calculateDistance(b.medicalStructureLatitude, b.medicalStructureLongitude, user);
+          return distanceA - distanceB;
         }
-        return lastNameComparison;
+        else {
+          const lastNameComparison = a.lastName.localeCompare(b.lastName);
+          if (lastNameComparison === 0) {
+            return a.firstName.localeCompare(b.firstName);
+          }
+          return lastNameComparison;
+        }
       } else {
+        if (type == 2) {
+          const hasCoordinatesA = a.latitude !== null && a.longitude !== null;
+          const hasCoordinatesB = b.latitude !== null && b.longitude !== null;
+          if (hasCoordinates && hasCoordinatesA && hasCoordinatesB) {
+            const distanceA = calculateDistance(a.latitude, a.longitude, user);
+            const distanceB = calculateDistance(b.latitude, b.longitude, user);
+            return distanceA - distanceB;
+          }
+        }
         return a.name.localeCompare(b.name)
       }
 
@@ -286,11 +307,6 @@ export class SearchBarComponent implements OnInit {
     // If the user starts typing in "Où" without selecting a specialty in "Qui"
     if (!this.isQuiSelected && !this.isSpecialtySelected) {
       this.searchTerm = ''; // Clear the "Qui" field if no selection was made
-      this.searchControl.disable()
-    }
-
-    if (this.location === '') {
-      this.searchControl.enable();
     }
   }
 

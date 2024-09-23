@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { combineLatest, finalize, tap, startWith } from 'rxjs';
-import { Chip } from 'src/app/common';
+import { Chip, Specialty } from 'src/app/common';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
 import { DataService } from 'src/app/services/data/data.service';
 
@@ -73,7 +73,7 @@ export class AdavancedSearchComponent implements OnInit {
             specialite: person.medicalSpecialtyNames,
             structure: person.medicalStructureName,
             localisation: person.medicalStructurePostalCode + ', ' + person.medicalStructureCity,
-            distance: `132 km`,
+            distance: this.calculateDistance(person.medicalStructureLatitude ? person.medicalStructureLatitude : 0, person.medicalStructureLongitude ? person.medicalStructureLongitude : 0, 46.202981, 6.249574) + '  km',
             actions: 'View'
           }))];
           this.specialities = [...specialities.map(speciality => ({
@@ -83,7 +83,7 @@ export class AdavancedSearchComponent implements OnInit {
             specialiteId: speciality.medicalSpecialtyId,
             structure: "",
             localisation: "",
-            distance: `128 km`,
+            distance: "",
             actions: 'View'
           })),]
           this.hospitals = [
@@ -94,7 +94,7 @@ export class AdavancedSearchComponent implements OnInit {
               specialities: structure.medicalSpecialties,
               structure: structure.name,
               localisation: structure.postalCode + ', ' + structure.city,
-              distance: `152 km`,
+              distance: this.calculateDistance(structure.latitude ? structure.latitude : 0, structure.longitude ? structure.longitude : 0, 46.202981, 6.249574) + '  km',
               actions: 'View'
             }))];
 
@@ -191,8 +191,9 @@ export class AdavancedSearchComponent implements OnInit {
               person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
             );
           } else {
-            filteredStructures = filteredStructures.filter(structure =>
-              structure.localisation.toLowerCase().startWith(departmentCode)
+            filteredStructures = filteredStructures.filter((structure, index) =>
+              console.log(structure.localisation, departmentCode, index)
+              // structure.localisation.toLowerCase().startWith(departmentCode)
             );
             filteredPersons = filteredPersons.filter(person =>
               person.localisation.toLowerCase().startWith(departmentCode)
@@ -291,7 +292,10 @@ export class AdavancedSearchComponent implements OnInit {
         case 'specialty':
           return this.dataService.compareStrings(a.specialite, b.specialite);
         case 'distance':
-          return this.dataService.compareNumbers(this.dataService.extractNumber(a.distance), this.dataService.extractNumber(b.distance));
+          if (a.profil !== "speciality" && b.profil !== "speciality") {
+            return this.dataService.compareNumbers(this.dataService.extractNumber(a.distance), this.dataService.extractNumber(b.distance));
+          }
+          return 0;
         default:
           this.dataSource = new MatTableDataSource(this.data);
           this.dataSource.paginator = this.paginator;
@@ -344,7 +348,24 @@ export class AdavancedSearchComponent implements OnInit {
   }
 
 
-  isObjectEmpty = (objectName: any = {}) => {
-    return Object.keys(objectName).length === 0
+  calculateDistance(destLat: number, destLng: number, srcLat: number, srcLng: number): number {
+
+    if (srcLat === 0 || destLat === 0) return 0;
+
+    const p = 0.017453292519943295;    // Math.PI / 180
+
+    const c = Math.cos;
+
+    const a = 0.5 - c((destLat - srcLat) * p) / 2 +
+
+      c(srcLat * p) * c(destLat * p) *
+
+      (1 - c((destLng - srcLng) * p)) / 2;
+
+    const result = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+
+    return Math.round(result * 100) / 100;
+
   }
+
 }
