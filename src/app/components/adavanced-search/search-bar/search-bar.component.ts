@@ -8,6 +8,7 @@ import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
 
 
+
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -299,7 +300,6 @@ export class SearchBarComponent implements OnInit {
     if (this.searchTerm === '') {
       this.searchLocationControl.enable();
     }
-
   }
 
   // Handle typing in Ou (Where) input
@@ -309,7 +309,6 @@ export class SearchBarComponent implements OnInit {
       this.searchTerm = ''; // Clear the "Qui" field if no selection was made
     }
   }
-
 
   clearQuiField(): void {
     this.searchTerm = '';  // Clear "Qui" if no valid selection

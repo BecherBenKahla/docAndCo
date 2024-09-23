@@ -16,7 +16,6 @@ export class DataService {
   }
 
   compareNumbers(a: number, b: number): number {
-    console.log(a, b);
     return a - b;
   }
 
