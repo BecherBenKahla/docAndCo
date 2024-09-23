@@ -3,7 +3,7 @@
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
         <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl"
-            [matAutocomplete]="auto" (keydown.enter)="onEnter()">
+            [matAutocomplete]="auto" (keydown.enter)="onEnter()" (input)= "onQuiInputChange()">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
             <mat-option *ngFor="let option of (filteredSpecialities | async)" [value]="option" id="matOptions">
                 <div class="container">    
