@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, finalize, tap } from 'rxjs';
+import { combineLatest, finalize, tap, startWith } from 'rxjs';
 import { Chip } from 'src/app/common';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
 import { DataService } from 'src/app/services/data/data.service';
@@ -164,18 +164,36 @@ export class AdavancedSearchComponent implements OnInit {
         this.showPractitioners = false;
         this.showReceivers = true;
         this.sortBy = "distance";
-        filteredPersons = filteredPersons.filter(person =>
-          person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
-        );
-        datas = [...filteredPersons];
-        if (specialitySectionUsed) {
-          this.showHospitals = true;
-          filteredStructures = filteredStructures.filter(structure =>
-            structure.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
-          );
+        const departmentCode = chip.whereSearchText.split(',')[0].trim();
+        const lengthBeforeComma = this.dataService.getLengthBeforeComma(departmentCode);
+        if (lengthBeforeComma > 3) {
           filteredPersons = filteredPersons.filter(person =>
             person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
           );
+        } else {
+          filteredPersons = filteredPersons.filter(person =>
+            person.localisation.toLowerCase().startsWith(departmentCode)
+          );
+        }
+        datas = [...filteredPersons];
+
+        if (specialitySectionUsed) {
+          this.showHospitals = true;
+          if (lengthBeforeComma > 3) {
+            filteredStructures = filteredStructures.filter(structure =>
+              structure.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
+            );
+            filteredPersons = filteredPersons.filter(person =>
+              person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
+            );
+          } else {
+            filteredStructures = filteredStructures.filter(structure =>
+              structure.localisation.toLowerCase().startWith(departmentCode)
+            );
+            filteredPersons = filteredPersons.filter(person =>
+              person.localisation.toLowerCase().startWith(departmentCode)
+            );
+          }
           datas = [...filteredStructures, ...filteredPersons];
         }
       }

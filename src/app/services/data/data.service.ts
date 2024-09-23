@@ -22,4 +22,9 @@ export class DataService {
   extractNumber(distance: string): number {
     return Number(distance.split(' ')[0]);
   }
+
+  getLengthBeforeComma(text: string): number {
+    const index = text.indexOf(',');
+    return index !== -1 ? index : text.length;
+  }
 }

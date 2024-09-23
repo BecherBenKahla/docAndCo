@@ -24,11 +24,11 @@ export class SearchBarComponent implements OnInit {
 
   searchTerm: string = '';
   location: string = '';
-  persons : Person[] = [];
-  specialities : Specialty[] = [];
-  structures : Structure[] = [];
+  persons: Person[] = [];
+  specialities: Specialty[] = [];
+  structures: Structure[] = [];
 
-  locations : Location[] = [];
+  locations: Location[] = [];
   departements: Departement[] = [];
   filteredPersons: any;
   filteredSpecialities: any;
@@ -48,23 +48,23 @@ export class SearchBarComponent implements OnInit {
   constructor() {
     this.filteredPersons = this.searchControl.valueChanges.pipe(
       startWith(''),
-      map(value => value.length >= 1 ? this._filter(value || '', this.persons, 0): []),
+      map(value => value.length >= 1 ? this._filter(value || '', this.persons, 0) : []),
     );
 
     this.filteredSpecialities = this.searchControl.valueChanges.pipe(
       startWith(''),
-      map(value => value.length >= 1 ? this._filter(value || '', this.specialities, 1): []),
+      map(value => value.length >= 1 ? this._filter(value || '', this.specialities, 1) : []),
     );
 
     this.filteredStructures = this.searchControl.valueChanges.pipe(
       startWith(''),
-      map(value => value.length >= 1 ? this._filter(value || '', this.structures, 2): []),
+      map(value => value.length >= 1 ? this._filter(value || '', this.structures, 2) : []),
     );
 
 
     this.filteredLocation = this.searchLocationControl.valueChanges.pipe(
       startWith(''),
-      map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations, 0): []),
+      map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations, 0) : []),
     );
 
     this.filteredDepartements = this.searchLocationControl.valueChanges.pipe(
@@ -81,33 +81,33 @@ export class SearchBarComponent implements OnInit {
     this.departements = this.data[4];
   }
 
-  private _filter(value: string, data : any, type : number): any[] {
+  private _filter(value: string, data: any, type: number): any[] {
     this.toHighlight = value;
     const filterValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    var result =  data.filter((option :any) => {
+    var result = data.filter((option: any) => {
       var name = '';
-      if(type == 0) {
-        name = option.firstName.concat(' '+option.lastName);
+      if (type == 0) {
+        name = option.firstName.concat(' ' + option.lastName);
       } else {
         name = option.name;
       }
-      const words = name.split(/[\s-]+/).map((part:any) => part.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-      return words.some((word:any) => word.startsWith(filterValue))
+      const words = name.split(/[\s-]+/).map((part: any) => part.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+      return words.some((word: any) => word.startsWith(filterValue))
     });
-     return result.sort((a: any, b: any) => {
-        if(type == 0) {
-          const lastNameComparison = a.lastName.localeCompare(b.lastName);
-          if (lastNameComparison === 0) {
-            return a.firstName.localeCompare(b.firstName);
-          }
-          return lastNameComparison;
-        } else {
-         return a.name.localeCompare(b.name)
+    return result.sort((a: any, b: any) => {
+      if (type == 0) {
+        const lastNameComparison = a.lastName.localeCompare(b.lastName);
+        if (lastNameComparison === 0) {
+          return a.firstName.localeCompare(b.firstName);
         }
-        
-      });
+        return lastNameComparison;
+      } else {
+        return a.name.localeCompare(b.name)
+      }
+
+    });
   }
-  
+
   onSearch() {
     if (this.isLocationSelected) {
       this.getData(this.searchTerm, this.location);
@@ -116,7 +116,7 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  onOptionSelected(event : any): void { 
+  onOptionSelected(event: any): void {
     const selectedValue = event.option.value;
 
     if (selectedValue && selectedValue.hasOwnProperty('passwordExpirationDelay')) {
@@ -134,27 +134,27 @@ export class SearchBarComponent implements OnInit {
 
   onEnter() {
     if (this.matAutocomplete.panelOpen) {
-      this.matAutocomplete.closePanel(); 
+      this.matAutocomplete.closePanel();
     }
     this.onSearch();
   }
 
 
 
-  getData(dataOption:any, locationOption:any) {
-    var item : any = {}
-    if(dataOption) {
-      item.whoAreaUsed = true ;
+  getData(dataOption: any, locationOption: any) {
+    var item: any = {}
+    if (dataOption) {
+      item.whoAreaUsed = true;
       item.sectionUsed = "",
-      item.showDetail = false;
+        item.showDetail = false;
       item.dataPerson = {};
       item.idSpeciality = -1;
       item.selectedHospitalData = {};
 
-      if(typeof(dataOption) === 'string') {
+      if (typeof (dataOption) === 'string') {
         item.whoSearchText = dataOption;
       } else {
-        if(this.persons.includes(dataOption)) {
+        if (this.persons.includes(dataOption)) {
           item.whoSearchText = dataOption.fullName;
           item.sectionUsed = "PS";
           item.showDetail = true;
@@ -167,24 +167,24 @@ export class SearchBarComponent implements OnInit {
             location: dataOption.medicalStructurePostalCode + ', ' + dataOption.medicalStructureCity,
             email: dataOption.email
           }
-        } else if(this.specialities.includes(dataOption)) {
-            item.whoSearchText = dataOption.name;
-            item.sectionUsed = "SPECIALTIE";
-            item.idSpeciality = dataOption.medicalSpecialtyId;
+        } else if (this.specialities.includes(dataOption)) {
+          item.whoSearchText = dataOption.name;
+          item.sectionUsed = "SPECIALTIE";
+          item.idSpeciality = dataOption.medicalSpecialtyId;
         } else {
           item.whoSearchText = dataOption.name;
           item.sectionUsed = "SDS",
-          item.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
+            item.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
         }
       }
     }
 
-    if(locationOption) {
+    if (locationOption) {
       item.whereSearchText = locationOption;
       item.whereAreaUsed = true;
     }
 
-    if(dataOption || locationOption) {
+    if (dataOption || locationOption) {
       console.log(item)
       this.newItemEvent.emit(item);
     }
@@ -196,7 +196,7 @@ export class SearchBarComponent implements OnInit {
   }
 
 
-    private _filterLocation(value: string, data: any, type: number): any[] {
+  private _filterLocation(value: string, data: any, type: number): any[] {
     this.toHighlight = value;
     // Check if the input starts with a number
     if (!isNaN(Number(value))) {
@@ -231,15 +231,15 @@ export class SearchBarComponent implements OnInit {
         return data.filter((option: Location) => {
           const city = option.city ? option.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
           return city.split(' ').some(word => word.startsWith(value.toLowerCase()));
-        }); 
+        });
       }
       if (type == 1) {
-      // Case 5: 3 or more letters, return departement names where any word starts with these 3 letters
-      return data.filter((option: Departement) => {
-        const departementName = option.dep_name ? option.dep_name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-        return departementName.split(' ').some(word => word.startsWith(value.toLowerCase()));
-      });
-    }
+        // Case 5: 3 or more letters, return departement names where any word starts with these 3 letters
+        return data.filter((option: Departement) => {
+          const departementName = option.dep_name ? option.dep_name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+          return departementName.split(' ').some(word => word.startsWith(value.toLowerCase()));
+        });
+      }
     }
 
     // Default return empty array if no conditions match
@@ -253,51 +253,51 @@ export class SearchBarComponent implements OnInit {
     // The selected option's value
     const selectedValue = event.option.value;
 
-  // Check if the selected value is a city or a department
-  if (selectedValue.postalCode && selectedValue.city) {
-    // It's a city selection
-    this.location = `${selectedValue.postalCode}, ${selectedValue.city}`;
-  } else if (selectedValue.num_dep && selectedValue.dep_name) {
-    // It's a department selection
-    this.location = `${selectedValue.num_dep}, ${selectedValue.dep_name}`;
-  }
+    // Check if the selected value is a city or a department
+    if (selectedValue.postalCode && selectedValue.city) {
+      // It's a city selection
+      this.location = `${selectedValue.postalCode}, ${selectedValue.city}`;
+    } else if (selectedValue.num_dep && selectedValue.dep_name) {
+      // It's a department selection
+      this.location = `${selectedValue.num_dep}, ${selectedValue.dep_name}`;
+    }
     this.getData(this.searchTerm, this.location)
   }
 
   // Handle typing in Qui (Who) input
-onQuiInputChange(): void {
-  this.isQuiSelected = false;  // Reset selection when typing
-  this.isSpecialtySelected = false;  // Specialty not selected when typing starts
+  onQuiInputChange(): void {
+    this.isQuiSelected = false;  // Reset selection when typing
+    this.isSpecialtySelected = false;  // Specialty not selected when typing starts
 
-  // Disable "Où" field while typing in "Qui"
-  this.searchLocationControl.disable();
-  this.location = ''; // Clear the "Où" field
+    // Disable "Où" field while typing in "Qui"
+    this.searchLocationControl.disable();
+    this.location = ''; // Clear the "Où" field
 
-  if (this.searchTerm === '') {
-    this.searchLocationControl.enable();
-  }
-  
-}
+    if (this.searchTerm === '') {
+      this.searchLocationControl.enable();
+    }
 
-// Handle typing in Ou (Where) input
-onOuInputChange(): void {
-  // If the user starts typing in "Où" without selecting a specialty in "Qui"
-  if (!this.isQuiSelected && !this.isSpecialtySelected) {
-    this.searchTerm = ''; // Clear the "Qui" field if no selection was made
-    this.searchControl.disable()
   }
 
-  if (this.location === '') {
-    this.searchControl.enable(); 
+  // Handle typing in Ou (Where) input
+  onOuInputChange(): void {
+    // If the user starts typing in "Où" without selecting a specialty in "Qui"
+    if (!this.isQuiSelected && !this.isSpecialtySelected) {
+      this.searchTerm = ''; // Clear the "Qui" field if no selection was made
+      this.searchControl.disable()
+    }
+
+    if (this.location === '') {
+      this.searchControl.enable();
+    }
   }
-}
 
 
-clearQuiField(): void {
+  clearQuiField(): void {
     this.searchTerm = '';  // Clear "Qui" if no valid selection
     this.searchLocationControl.enable();
-}
-  
+  }
+
   clearOuField(): void {
     this.location = '';            // Clear the input value
     this.isOuSelected = false;     // Reset the selected state
@@ -307,11 +307,11 @@ clearQuiField(): void {
   }
 
   onSearchFocus() {
-    this.searchLocationControl.reset();
+    // this.searchLocationControl.reset();
   }
 
   onLocationFocus() {
-    this.searchControl.reset();
+    // this.searchControl.reset();
   }
 
 }
