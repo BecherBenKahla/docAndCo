@@ -60,6 +60,7 @@ export class AdavancedSearchComponent implements OnInit {
       this.advancedSearchService.getSpecialities(),
       this.advancedSearchService.getStructures(),
       this.advancedSearchService.getLocations(),
+      this.advancedSearchService.getLocations(),
     ]).pipe(
       tap({
         next: ([persons, specialities, structures, locations]) => {
