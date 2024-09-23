@@ -143,6 +143,10 @@ export class AdavancedSearchComponent implements OnInit {
     let sdsSectionUsed = false;
     this.sortBy = "";
 
+    this.showHospitals = true;
+    this.showPractitioners = true;
+    this.showReceivers = true;
+
     this.chips.forEach(chip => {
       if (chip.sectionUsed === "SPECIALTIE") {
         specialitySectionUsed = true;

@@ -165,7 +165,9 @@ export class SearchBarComponent implements OnInit {
             rpps: dataOption.rpps,
             phone: dataOption.phoneNumber,
             location: dataOption.medicalStructurePostalCode + ', ' + dataOption.medicalStructureCity,
-            email: dataOption.email
+            email: dataOption.email,
+            medicalStructureName: dataOption.medicalStructureName,
+            address: dataOption.medicalStructurePostalCode + ' ' + dataOption.medicalStructureStreet + ' ' + dataOption.medicalStructureCity
           }
         } else if (this.specialities.includes(dataOption)) {
           item.whoSearchText = dataOption.name;
