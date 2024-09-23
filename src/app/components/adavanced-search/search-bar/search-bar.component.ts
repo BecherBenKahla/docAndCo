@@ -309,6 +309,10 @@ export class SearchBarComponent implements OnInit {
     if (!this.isQuiSelected && !this.isSpecialtySelected) {
       this.searchTerm = ''; // Clear the "Qui" field if no selection was made
     }
+    this.searchControl.disable();
+    if (this.location === '' || this.isSpecialtySelected) {
+      this.searchControl.enable();
+    }
   }
 
   clearQuiField(): void {
