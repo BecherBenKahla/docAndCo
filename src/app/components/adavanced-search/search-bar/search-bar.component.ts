@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
+import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
 
 
@@ -28,10 +29,12 @@ export class SearchBarComponent implements OnInit {
   structures : Structure[] = [];
 
   locations : Location[] = [];
+  departements: Departement[] = [];
   filteredPersons: any;
   filteredSpecialities: any;
   filteredStructures: any;
   filteredLocation: any;
+  filteredDepartements: any;
   toHighlight: string = '';
 
   // Variables to track if user is typing or has selected a value
@@ -61,7 +64,12 @@ export class SearchBarComponent implements OnInit {
 
     this.filteredLocation = this.searchLocationControl.valueChanges.pipe(
       startWith(''),
-      map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations): []),
+      map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations, 0): []),
+    );
+
+    this.filteredDepartements = this.searchLocationControl.valueChanges.pipe(
+      startWith(''),
+      map(value => value.length >= 1 ? this._filterLocation(value || '', this.departements, 1) : []),
     );
   }
 
@@ -70,7 +78,7 @@ export class SearchBarComponent implements OnInit {
     this.specialities = this.data[1];
     this.structures = this.data[2];
     this.locations = this.data[3];
-
+    this.departements = this.data[4];
   }
 
   private _filter(value: string, data : any, type : number): any[] {
@@ -188,7 +196,7 @@ export class SearchBarComponent implements OnInit {
   }
 
 
-  private _filterLocation(value: string, data: any): any[] {
+    private _filterLocation(value: string, data: any, type: number): any[] {
     this.toHighlight = value;
     // Check if the input starts with a number
     if (!isNaN(Number(value))) {
@@ -196,36 +204,44 @@ export class SearchBarComponent implements OnInit {
       if (value.length === 1) {
         return [];
       }
-  
-      // Case 2: 2 digits, return postal code + city name with these 2 digits
-      if (value.length === 2) {
-        return data.filter((option: Location) => {
-          const postalCode = option.postalCode.toString();
-          return postalCode.startsWith(value);  // Return matching postal codes with 2 digits
+
+      // Case 2: 2 digits, return departement
+      if (value.length === 2 && type == 1) {
+        return data.filter((option: Departement) => {
+          const number = option.num_dep.toString();
+          return number.startsWith(value);  // Return matching departement number with 2 digits
         });
       }
-  
+
       // Case 3: 3 digits, return postal code + city name with these 3 digits
-      if (value.length >= 3) {
+      if (value.length >= 3 && type == 0) {
         return data.filter((option: Location) => {
           const postalCode = option.postalCode.toString();
           return postalCode.startsWith(value);  // Return matching postal codes with 3 digits
         });
       }
-  
+
     } else {
       // Case 4: 1 or 2 letters, return nothing
       if (value.length <= 2) {
         return [];
       }
-  
-      // Case 5: 3 or more letters, return city names where any word starts with these 3 letters
-      return data.filter((option: Location) => {
-        const city = option.city ? option.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-        return city.split(' ').some(word => word.startsWith(value.toLowerCase()));
+      if (type == 0) {
+        // Case 5: 3 or more letters, return city names where any word starts with these 3 letters
+        return data.filter((option: Location) => {
+          const city = option.city ? option.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+          return city.split(' ').some(word => word.startsWith(value.toLowerCase()));
+        }); 
+      }
+      if (type == 1) {
+      // Case 5: 3 or more letters, return departement names where any word starts with these 3 letters
+      return data.filter((option: Departement) => {
+        const departementName = option.dep_name ? option.dep_name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+        return departementName.split(' ').some(word => word.startsWith(value.toLowerCase()));
       });
     }
-  
+    }
+
     // Default return empty array if no conditions match
     return [];
   }
@@ -234,12 +250,18 @@ export class SearchBarComponent implements OnInit {
     this.isLocationSelected = true;
     this.isOuSelected = true;
     this.isTypingOu = false;
-  // The selected option's value
-  const selectedValue = event.option.value;
+    // The selected option's value
+    const selectedValue = event.option.value;
 
-  // Set the value of 'location' to the selected option
-  this.location = `${selectedValue.postalCode}, ${selectedValue.city}`;
-  this.getData(this.searchTerm, this.location)
+  // Check if the selected value is a city or a department
+  if (selectedValue.postalCode && selectedValue.city) {
+    // It's a city selection
+    this.location = `${selectedValue.postalCode}, ${selectedValue.city}`;
+  } else if (selectedValue.num_dep && selectedValue.dep_name) {
+    // It's a department selection
+    this.location = `${selectedValue.num_dep}, ${selectedValue.dep_name}`;
+  }
+    this.getData(this.searchTerm, this.location)
   }
 
   // Handle typing in Qui (Who) input
