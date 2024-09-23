@@ -185,18 +185,21 @@ export class AdavancedSearchComponent implements OnInit {
           this.showHospitals = true;
           if (lengthBeforeComma > 3) {
             filteredStructures = filteredStructures.filter(structure =>
+              typeof structure.localisation === 'string' &&
               structure.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
             );
             filteredPersons = filteredPersons.filter(person =>
+              typeof person.localisation === 'string' &&
               person.localisation.toLowerCase().includes(chip.whereSearchText.toLowerCase())
             );
           } else {
             filteredStructures = filteredStructures.filter((structure, index) =>
-              console.log(structure.localisation, departmentCode, index)
-              // structure.localisation.toLowerCase().startWith(departmentCode)
+              typeof structure.localisation === 'string' &&
+              structure.localisation.toLowerCase().startsWith(departmentCode.toLowerCase())
             );
             filteredPersons = filteredPersons.filter(person =>
-              person.localisation.toLowerCase().startWith(departmentCode)
+              typeof person.localisation === 'string' &&
+              person.localisation.toLowerCase().startsWith(departmentCode.toLowerCase())
             );
           }
           datas = [...filteredStructures, ...filteredPersons];
