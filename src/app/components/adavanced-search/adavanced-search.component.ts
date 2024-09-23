@@ -65,10 +65,11 @@ export class AdavancedSearchComponent implements OnInit {
       this.advancedSearchService.getSpecialities(),
       this.advancedSearchService.getStructures(),
       this.advancedSearchService.getLocations(),
+      this.advancedSearchService.getDepartements(),
     ]).pipe(
       tap({
-        next: ([persons, specialities, structures, locations]) => {
-          this.combinedDatas = [persons, specialities, structures, locations];
+        next: ([persons, specialities, structures, locations, departements]) => {
+          this.combinedDatas = [persons, specialities, structures, locations, departements];
           this.persons = [...persons.map(person => ({
             profil: 'person',
             identite: `${person.lastName} ${person.firstName} `,
