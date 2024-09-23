@@ -70,6 +70,16 @@
                     </div>
                 </div>
             </mat-option>
+          <mat-divider></mat-divider>
+        <mat-option *ngFor="let option of (filteredDepartements |  async)" [value]="option" id="matOption">
+            <div class="container">
+                <i class='fas fa-location-dot'></i>
+                <div class="content">
+                    <span [innerHTML]="(option.num_dep || '') | highlight: toHighlight : 'highlight'"></span>,
+                    <span [innerHTML]="(option.dep_name || '') | highlight: toHighlight : 'highlight'"></span>
+                </div>
+            </div>
+        </mat-option>
         </mat-autocomplete>
         <mat-icon *ngIf="location" (click)="clearOuField()" class="clearIcon" matSuffix>clear</mat-icon>
     </mat-form-field>
