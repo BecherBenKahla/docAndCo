@@ -3,7 +3,7 @@
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
         <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl"
-            [matAutocomplete]="auto" (keydown.enter)="onEnter()">
+            [matAutocomplete]="auto" (keydown.enter)="onEnter()" (focus)="onSearchFocus()">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
             <mat-option *ngFor="let option of (filteredSpecialities | async) | alphabeticSpecialty" [value]="option"
                 id="matOptions">
@@ -58,7 +58,8 @@
         <mat-icon class="icon-style" matPrefix><i class="fas fa-map-marker-alt"></i></mat-icon>
         <mat-label>Où ?</mat-label>
         <input matInput [(ngModel)]="location" [formControl]="searchLocationControl"
-            placeholder="Ex. Paris, 75001, Île-de-France" [matAutocomplete]="autoLocation" (input)="onOuInputChange()">
+            placeholder="Ex. Paris, 75001, Île-de-France" [matAutocomplete]="autoLocation" (input)="onOuInputChange()"
+            (focus)="onLocationFocus()">
 
         <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
             <mat-option *ngFor="let option of (filteredLocation | async)" [value]="option" id="matOption">
@@ -73,5 +74,5 @@
         </mat-autocomplete>
         <mat-icon *ngIf="location" (click)="clearOuField()" class="clearIcon" matSuffix>clear</mat-icon>
     </mat-form-field>
-    <button mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
+    <button class="btn-position" fxFlex mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
 </div>
