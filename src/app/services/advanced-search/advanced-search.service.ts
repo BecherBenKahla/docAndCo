@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, map, Observable } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
+import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
 
 @Injectable({
