@@ -3,7 +3,7 @@
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
         <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl"
-            [matAutocomplete]="auto" (keydown.enter)="onEnter()" (focus)="onSearchFocus()">
+            [matAutocomplete]="auto" (keydown.enter)="onEnter()">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
             <mat-option *ngFor="let option of (filteredSpecialities | async)" [value]="option" id="matOptions">
                 <div class="container">    
@@ -54,8 +54,7 @@
         <mat-label>Où ?</mat-label>
 
         <input matInput [(ngModel)]="location" [formControl]="searchLocationControl"
-            placeholder="Ex. Paris, 75001, Île-de-France" [matAutocomplete]="autoLocation" (input)="onOuInputChange()"
-            (focus)="onLocationFocus()">
+            placeholder="Ex. Paris, 75001, Île-de-France" [matAutocomplete]="autoLocation" (input)="onOuInputChange()">
 
         <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
           <mat-option *ngFor="let option of (filteredLocation | async)" [value]="option" id="matOption">
