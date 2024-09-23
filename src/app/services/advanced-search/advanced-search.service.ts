@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, map, Observable } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
+import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
 
 @Injectable({
@@ -49,6 +50,20 @@ export class AdvancedSearchService {
         );
         return uniqueLocations;
       })
+    );
+  }
+
+    getDepartements(): Observable<Departement[]> {
+    let departementsDocumentPath = 'assets/data/departements-region.json';
+  
+    return this.http.get<Departement[]>(departementsDocumentPath).pipe(
+      map((departements: Departement[]) => {
+        return departements.map(departement => ({
+          ...departement,
+          num_dep: departement.num_dep.toString()  // Ensure num_dep is a string
+        }));
+      }),
+      first()  // Complete the observable after the first emission
     );
   }
 }
