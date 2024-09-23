@@ -51,4 +51,18 @@ export class AdvancedSearchService {
       })
     );
   }
+
+    getDepartements(): Observable<Departement[]> {
+    let departementsDocumentPath = 'assets/data/departements-region.json';
+  
+    return this.http.get<Departement[]>(departementsDocumentPath).pipe(
+      map((departements: Departement[]) => {
+        return departements.map(departement => ({
+          ...departement,
+          num_dep: departement.num_dep.toString()  // Ensure num_dep is a string
+        }));
+      }),
+      first()  // Complete the observable after the first emission
+    );
+  }
 }
