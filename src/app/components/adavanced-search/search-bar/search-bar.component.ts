@@ -284,7 +284,7 @@ export class SearchBarComponent implements OnInit {
       this.location = `${selectedValue.postalCode}, ${selectedValue.city}`;
     } else if (selectedValue.num_dep && selectedValue.dep_name) {
       // It's a department selection
-      this.location = `${selectedValue.num_dep}, ${selectedValue.dep_name}`;
+      this.location = `${selectedValue.num_dep}, ${selectedValue.dep_name}, ${selectedValue.region_name}`;
     }
     this.getData(this.searchTerm, this.location)
   }

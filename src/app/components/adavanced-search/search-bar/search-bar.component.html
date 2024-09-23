@@ -77,7 +77,8 @@
                     <i class='fas fa-location-dot'></i>
                     <div class="content">
                         <span [innerHTML]="(option.num_dep || '') | highlight: toHighlight : 'highlight'"></span>,
-                        <span [innerHTML]="(option.dep_name || '') | highlight: toHighlight : 'highlight'"></span>
+                        <span [innerHTML]="(option.dep_name || '') | highlight: toHighlight : 'highlight'"></span>,
+                        <span [innerHTML]="(option.region_name || '') | highlight: toHighlight : 'highlight'"></span>
                     </div>
                 </div>
             </mat-option>

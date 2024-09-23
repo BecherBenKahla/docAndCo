@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, finalize, tap, startWith } from 'rxjs';
-import { Chip, Specialty } from 'src/app/common';
+import { combineLatest, finalize, tap } from 'rxjs';
+import { Chip } from 'src/app/common';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
 import { DataService } from 'src/app/services/data/data.service';
 
