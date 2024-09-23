@@ -188,6 +188,7 @@ export class SearchBarComponent implements OnInit {
             phone: dataOption.phoneNumber,
             location: dataOption.medicalStructurePostalCode + ', ' + dataOption.medicalStructureCity,
             email: dataOption.email,
+            website: dataOption.website,
             medicalStructureName: dataOption.medicalStructureName,
             address: dataOption.medicalStructurePostalCode + ' ' + dataOption.medicalStructureStreet + ' ' + dataOption.medicalStructureCity
           }
