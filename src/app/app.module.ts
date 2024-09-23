@@ -21,8 +21,7 @@ import { AppComponent } from './app.component';
 import { AdavancedSearchComponent } from './components/adavanced-search/adavanced-search.component';
 import { SearchBarComponent } from './components/adavanced-search/search-bar/search-bar.component';
 import { HighlightPipe } from './common/pipes/highlight.pipe';
-import { AlphabeticPipePerson } from './common/pipes/alphabetic.pipe';
-import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
+import { PersonDetailComponent } from './person-detail/person-detail.component';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { CustomPaginator } from './common/translations/custom-mat-paginator-intl';
 
@@ -32,8 +31,7 @@ import { CustomPaginator } from './common/translations/custom-mat-paginator-intl
     AdavancedSearchComponent,
     SearchBarComponent,
     HighlightPipe,
-    AlphabeticPipePerson,
-    AlphabeticPipePecialty,
+    PersonDetailComponent
   ],
   imports: [
     BrowserModule,

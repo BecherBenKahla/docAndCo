@@ -322,4 +322,7 @@ export class AdavancedSearchComponent implements OnInit {
   }
 
 
+  isObjectEmpty = (objectName: any = {}) => {
+    return Object.keys(objectName).length === 0
+  }
 }
