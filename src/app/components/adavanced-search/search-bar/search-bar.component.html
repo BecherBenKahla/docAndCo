@@ -2,8 +2,8 @@
      <mat-form-field appearance="outline" fxFlex="50%">
         <mat-icon matPrefix>search</mat-icon>
         <mat-label>Nom, Spécialité, Établissement, ...</mat-label>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl" [matAutocomplete]="auto" 
-        (keydown.enter)="onEnter()" (input)="onQuiInputChange()">
+        <input matInput [(ngModel)]="searchTerm" placeholder="Ex. Cardiologie" [formControl]="searchControl"
+            [matAutocomplete]="auto" (keydown.enter)="onEnter()" (focus)="onSearchFocus()">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
             <mat-option *ngFor="let option of (filteredSpecialities | async)" [value]="option" id="matOptions">
                 <div class="container">    
@@ -52,13 +52,11 @@
     <mat-form-field appearance="outline" fxFlex="30%">
         <mat-icon class="icon-style" matPrefix><i class="fas fa-map-marker-alt"></i></mat-icon>
         <mat-label>Où ?</mat-label>
-        <input
-          matInput
-          [(ngModel)]="location"
-          [formControl]="searchLocationControl"
-          placeholder="Ex. Paris, 75001, Île-de-France"
-          [matAutocomplete]="autoLocation" (input)="onOuInputChange()">
-    
+
+        <input matInput [(ngModel)]="location" [formControl]="searchLocationControl"
+            placeholder="Ex. Paris, 75001, Île-de-France" [matAutocomplete]="autoLocation" (input)="onOuInputChange()"
+            (focus)="onLocationFocus()">
+
         <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
           <mat-option *ngFor="let option of (filteredLocation | async)" [value]="option" id="matOption">
             <div class="container">
@@ -71,6 +69,8 @@
           </mat-option>
         </mat-autocomplete>
         <mat-icon *ngIf="location" (click)="clearOuField()" class="clearIcon" matSuffix>clear</mat-icon>
-      </mat-form-field>
-    <button mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
+
+    </mat-form-field>
+    <button class="btn-position" fxFlex mat-flat-button color="primary" (click)="onSearch()">RECHERCHER</button>
+
 </div>

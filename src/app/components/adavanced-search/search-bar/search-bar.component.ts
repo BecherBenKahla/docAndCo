@@ -14,6 +14,10 @@ import { Location } from 'src/app/common/models/location.model';
 })
 export class SearchBarComponent implements OnInit {
 
+  @Input() data: any;
+  @Output() newItemEvent = new EventEmitter<any>();
+  @ViewChild(MatAutocompleteTrigger) matAutocomplete: any;
+
   searchControl = new FormControl('');
   searchLocationControl = new FormControl('');
 
@@ -36,14 +40,9 @@ export class SearchBarComponent implements OnInit {
   isQuiSelected: boolean = false;
   isOuSelected: boolean = false;
   isSpecialtySelected: boolean = false;
-  
-  @Input() data : any;
-  @Output() newItemEvent = new EventEmitter<any>();
-  @ViewChild(MatAutocompleteTrigger) matAutocomplete: any;
+  isLocationSelected: boolean = false;
 
-  
-  constructor() { 
-
+  constructor() {
     this.filteredPersons = this.searchControl.valueChanges.pipe(
       startWith(''),
       map(value => value.length >= 1 ? this._filter(value || '', this.persons, 0): []),
@@ -64,8 +63,7 @@ export class SearchBarComponent implements OnInit {
       startWith(''),
       map(value => value.length >= 1 ? this._filterLocation(value || '', this.locations): []),
     );
-
-   }
+  }
 
   ngOnInit(): void {
     this.persons = this.data[0];
@@ -103,9 +101,11 @@ export class SearchBarComponent implements OnInit {
   }
   
   onSearch() {
-      if(this.searchTerm || this.location) {
-        this.getData(this.searchTerm, this.location);
-      }
+    if (this.isLocationSelected) {
+      this.getData(this.searchTerm, this.location);
+    } else {
+      this.getData(this.searchTerm, null);
+    }
   }
 
   onOptionSelected(event : any): void { 
@@ -132,9 +132,9 @@ export class SearchBarComponent implements OnInit {
   }
 
 
+
   getData(dataOption:any, locationOption:any) {
     var item : any = {}
-
     if(dataOption) {
       item.whoAreaUsed = true ;
       item.sectionUsed = "",
@@ -180,6 +180,7 @@ export class SearchBarComponent implements OnInit {
       console.log(item)
       this.newItemEvent.emit(item);
     }
+    this.newItemEvent.emit(item);
   }
 
   displayFn(option: any): string {
@@ -229,8 +230,8 @@ export class SearchBarComponent implements OnInit {
     return [];
   }
 
-  locationSelected(event : any): void {
-
+  locationSelected(event: any): void {
+    this.isLocationSelected = true;
     this.isOuSelected = true;
     this.isTypingOu = false;
   // The selected option's value
@@ -280,6 +281,15 @@ clearQuiField(): void {
     this.isOuSelected = false;     // Reset the selected state
     this.isTypingOu = false;       // Reset the typing state
     this.searchControl.enable();   // Re-enable the "Qui" input
+    this.isLocationSelected = false;
+  }
+
+  onSearchFocus() {
+    this.searchLocationControl.reset();
+  }
+
+  onLocationFocus() {
+    this.searchControl.reset();
   }
 
 }

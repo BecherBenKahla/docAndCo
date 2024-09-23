@@ -1,21 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { combineLatest, finalize, first, tap } from 'rxjs';
+import { combineLatest, finalize, tap } from 'rxjs';
+import { Chip } from 'src/app/common';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
-
-export interface Chip {
-  name: string;
-  whoAreaUsed: boolean,
-  whereAreaUsed: boolean,
-  whoSearchText: string,
-  whereSearchText: string,
-  sectionUsed: string,
-  showDetail: boolean,
-  dataPerson: any;
-  idSpeciality: number;
-  selectedHospitalData: any;
-}
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
   selector: 'app-adavanced-search',
@@ -41,7 +30,10 @@ export class AdavancedSearchComponent implements OnInit {
     rpps: "",
     phone: "",
     location: "",
-    email: ""
+    email: "",
+    website: "",
+    medicalStructureName: "",
+    address: ""
   };
   combinedDatas: any;
   persons: any[] = [];
@@ -51,7 +43,10 @@ export class AdavancedSearchComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  constructor(private advancedSearchService: AdvancedSearchService) {
+  constructor(
+    private advancedSearchService: AdvancedSearchService,
+    private dataService: DataService
+  ) {
     this.dataSource = new MatTableDataSource(this.combinedDatas);
   }
 
@@ -64,6 +59,7 @@ export class AdavancedSearchComponent implements OnInit {
       this.advancedSearchService.getPersons(),
       this.advancedSearchService.getSpecialities(),
       this.advancedSearchService.getStructures(),
+      this.advancedSearchService.getLocations(),
       this.advancedSearchService.getLocations(),
     ]).pipe(
       tap({
@@ -145,7 +141,8 @@ export class AdavancedSearchComponent implements OnInit {
     let filteredSpecialities = this.specialities;
     let specialitySectionUsed = false;
     let sdsSectionUsed = false;
-    this.sortBy = ""
+    this.sortBy = "";
+
     this.chips.forEach(chip => {
       if (chip.sectionUsed === "SPECIALTIE") {
         specialitySectionUsed = true;
@@ -224,7 +221,7 @@ export class AdavancedSearchComponent implements OnInit {
       }
     });
 
-    if (this.chips.length === 0 && !this.isObjectEmpty(item)) {
+    if (this.chips.length === 0 && !this.dataService.isObjectEmpty(item)) {
       this.showHospitals = false;
       this.showPractitioners = false;
       this.showReceivers = true;
@@ -261,18 +258,18 @@ export class AdavancedSearchComponent implements OnInit {
       switch (this.sortBy) {
         case 'firstName':
           if (a.profil === "person" && b.profil === "person") {
-            return this.compareStrings(a.firstName, b.firstName);
+            return this.dataService.compareStrings(a.firstName, b.firstName);
           }
           return 0;
         case 'lastName':
           if (a.profil === "person" && b.profil === "person") {
-            return this.compareStrings(a.lastName, b.lastName);
+            return this.dataService.compareStrings(a.lastName, b.lastName);
           }
           return 0;
         case 'specialty':
-          return this.compareStrings(a.specialite, b.specialite);
+          return this.dataService.compareStrings(a.specialite, b.specialite);
         case 'distance':
-          return this.compareNumbers(this.extractNumber(a.distance), this.extractNumber(b.distance));
+          return this.dataService.compareNumbers(this.dataService.extractNumber(a.distance), this.dataService.extractNumber(b.distance));
         default:
           this.dataSource = new MatTableDataSource(this.data);
           this.dataSource.paginator = this.paginator;
@@ -285,17 +282,7 @@ export class AdavancedSearchComponent implements OnInit {
     }
   }
 
-  compareStrings(a: string, b: string): number {
-    return a.localeCompare(b);
-  }
 
-  compareNumbers(a: number, b: number): number {
-    return a - b;
-  }
-
-  extractNumber(distance: string): number {
-    return Number(distance.split(' ')[0]);
-  }
 
   showData() {
     const filteredData = this.filteredData.filter(item => {
@@ -333,6 +320,7 @@ export class AdavancedSearchComponent implements OnInit {
     }
     this.applyChipsFilter(items);
   }
+
 
   isObjectEmpty = (objectName: any = {}) => {
     return Object.keys(objectName).length === 0
