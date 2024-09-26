@@ -74,6 +74,10 @@ export class AdavancedSearchComponent implements OnInit {
             structure: person.medicalStructureName,
             localisation: person.medicalStructurePostalCode + ', ' + person.medicalStructureCity,
             distance: this.calculateDistance(person.medicalStructureLatitude ? person.medicalStructureLatitude : 0, person.medicalStructureLongitude ? person.medicalStructureLongitude : 0, 46.202981, 6.249574) + '  km',
+            isFavourite: person.isFavourite,
+            isReceiver: person.isReceiver,
+            nbAddressedClaims: person.nbAddressedClaims,
+            nbDeniedClaims: person.nbDeniedClaims,
             actions: 'View'
           }))];
           this.specialities = [...specialities.map(speciality => ({
@@ -151,7 +155,7 @@ export class AdavancedSearchComponent implements OnInit {
       if (chip.sectionUsed === "SPECIALTIE") {
         specialitySectionUsed = true;
         this.showHospitals = true;
-        this.showPractitioners = false;
+        this.showPractitioners = true;
         this.showReceivers = true;
         this.sortBy = "distance"
         filteredStructures = filteredStructures.filter(structure =>
@@ -165,7 +169,7 @@ export class AdavancedSearchComponent implements OnInit {
 
       if (chip.whereAreaUsed) {
         this.showHospitals = false;
-        this.showPractitioners = false;
+        this.showPractitioners = true;
         this.showReceivers = true;
         this.sortBy = "distance";
         const departmentCode = chip.whereSearchText.split(',')[0].trim();
@@ -218,7 +222,7 @@ export class AdavancedSearchComponent implements OnInit {
         filteredPersons = filteredPersons.filter(person =>
           person.structure && person.structure.includes(chip.whoSearchText)
         );
-        datas = [...filteredSpecialities, ...filteredPersons];
+        datas = [...filteredPersons, ...filteredSpecialities];
       }
 
       if (specialitySectionUsed && item.sectionUsed == "") {
@@ -249,7 +253,7 @@ export class AdavancedSearchComponent implements OnInit {
 
     if (this.chips.length === 0 && !this.dataService.isObjectEmpty(item)) {
       this.showHospitals = false;
-      this.showPractitioners = false;
+      this.showPractitioners = true;
       this.showReceivers = true;
       this.sortBy = "distance";
       filteredPersons = filteredPersons.filter(person =>
@@ -293,7 +297,10 @@ export class AdavancedSearchComponent implements OnInit {
           }
           return 0;
         case 'specialty':
-          return this.dataService.compareStrings(a.specialite, b.specialite);
+          if (a.profil !== "speciality" && b.profil !== "speciality") {
+            return this.dataService.compareStrings(a.specialite, b.specialite);
+          }
+          return 0;
         case 'distance':
           if (a.profil !== "speciality" && b.profil !== "speciality") {
             return this.dataService.compareNumbers(this.dataService.extractNumber(a.distance), this.dataService.extractNumber(b.distance));
@@ -311,19 +318,28 @@ export class AdavancedSearchComponent implements OnInit {
     }
   }
 
-
-
   showData() {
+    if (!this.showPractitioners) {
+      this.showReceivers = false;
+    }
     const filteredData = this.filteredData.filter(item => {
       if (this.showHospitals && item.profil === 'hospital') {
         return true;
       }
-      if (this.showReceivers && item.profil === 'person') {
-        return true;
+      if (this.showPractitioners && item.profil === 'person') {
+        if (this.showReceivers) {
+          return true;
+        } else {
+          if (!item.isReceiver) {
+            return true;
+          }
+        }
       }
-      if (this.showPractitioners && item.profil === 'speciality') {
-        return true;
+
+      if (item.profil === 'speciality') {
+        return this.dataSource.data.some(existingItem => existingItem.id === item.id);
       }
+
       return false;
     });
 

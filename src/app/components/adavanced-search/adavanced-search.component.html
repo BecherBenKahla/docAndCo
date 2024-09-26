@@ -68,12 +68,18 @@
     <div fxLayout="row" class="space-between-records" fxLayoutAlign="start center">
         <span class="space-between-elements">Afficher uniquement</span>
         <mat-checkbox color="primary" class="space-between-elements" [(ngModel)]="showReceivers"
-            (change)="showData()">RECEVEURS</mat-checkbox>
+            [disabled]="!showPractitioners" (change)="showData()">
+            RECEVEURS
+        </mat-checkbox>
         <mat-checkbox color="primary" class="space-between-elements" [(ngModel)]="showPractitioners"
-            (change)="showData()">PRATICIENS</mat-checkbox>
-        <mat-checkbox color="primary" class="space-between-elements" [(ngModel)]="showHospitals"
-            (change)="showData()">ETABLISSEMENTS</mat-checkbox>
+            (change)="showData()">
+            PRATICIENS
+        </mat-checkbox>
+        <mat-checkbox color="primary" class="space-between-elements" [(ngModel)]="showHospitals" (change)="showData()">
+            ETABLISSEMENTS
+        </mat-checkbox>
     </div>
+
     <div fxLayout="row" class="space-between-records">
         <span class="space-between-elements">Trier par</span>
         <mat-radio-group [(ngModel)]="sortBy" (change)="applySort()">
@@ -146,12 +152,13 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <div style="display: flex;">
-                    <button mat-icon-button class="btn-outline-success">
+                <div class="action-buttons">
+                    <button *ngIf="element.isReceiver" mat-icon-button class="btn-outline-success">
                         <i id="R" class="fas fa-r"></i>
                     </button>
-                    <button mat-icon-button><i id="trophy" class='fas fa-trophy'></i></button>
-                    <button mat-icon-button><mat-icon>star_border</mat-icon></button>
+                    <!-- <button mat-icon-button><i id="trophy" class='fas fa-trophy'></i></button> -->
+                    <button mat-icon-button *ngIf="element.isFavourite"><mat-icon
+                            class="star">star_border</mat-icon></button>
                 </div>
             </td>
         </ng-container>

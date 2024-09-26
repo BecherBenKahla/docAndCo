@@ -136,3 +136,13 @@ mat-card {
     font-weight: 400;
     font-size: 1em;
 }
+
+.action-buttons {
+    display: flex;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.action-buttons .star {
+    color: gold;
+}
