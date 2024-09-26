@@ -3,9 +3,9 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
-import { calculateDistance } from 'src/app/common/Utilities';
 import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
+import { calculateDistance } from 'src/app/services/data/data.service';
 
 
 
@@ -164,23 +164,24 @@ export class SearchBarComponent implements OnInit {
 
 
   getData(dataOption: any, locationOption: any) {
-    var item: any = {}
+    var itemSearch: any = {}
+    var itemLocation: any = {}
     if (dataOption) {
-      item.whoAreaUsed = true;
-      item.sectionUsed = "",
-        item.showDetail = false;
-      item.dataPerson = {};
-      item.idSpeciality = -1;
-      item.selectedHospitalData = {};
+      itemSearch.whoAreaUsed = true;
+      itemSearch.sectionUsed = "",
+      itemSearch.showDetail = false;
+      itemSearch.dataPerson = {};
+      itemSearch.idSpeciality = -1;
+      itemSearch.selectedHospitalData = {};
 
       if (typeof (dataOption) === 'string') {
-        item.whoSearchText = dataOption;
+        itemSearch.whoSearchText = dataOption;
       } else {
         if (this.persons.includes(dataOption)) {
-          item.whoSearchText = dataOption.fullName;
-          item.sectionUsed = "PS";
-          item.showDetail = true;
-          item.dataPerson = {
+          itemSearch.whoSearchText = dataOption.fullName;
+          itemSearch.sectionUsed = "PS";
+          itemSearch.showDetail = true;
+          itemSearch.dataPerson = {
             firstName: dataOption.firstName,
             lastName: dataOption.lastName,
             speciality: dataOption.medicalSpecialtyNames,
@@ -193,27 +194,23 @@ export class SearchBarComponent implements OnInit {
             address: dataOption.medicalStructurePostalCode + ' ' + dataOption.medicalStructureStreet + ' ' + dataOption.medicalStructureCity
           }
         } else if (this.specialities.includes(dataOption)) {
-          item.whoSearchText = dataOption.name;
-          item.sectionUsed = "SPECIALTIE";
-          item.idSpeciality = dataOption.medicalSpecialtyId;
+          itemSearch.whoSearchText = dataOption.name;
+          itemSearch.sectionUsed = "SPECIALTIE";
+          itemSearch.idSpeciality = dataOption.medicalSpecialtyId;
         } else {
-          item.whoSearchText = dataOption.name;
-          item.sectionUsed = "SDS",
-            item.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
+          itemSearch.whoSearchText = dataOption.name;
+          itemSearch.sectionUsed = "SDS",
+          itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
         }
       }
+      this.newItemEvent.emit(itemSearch);
     }
 
     if (locationOption) {
-      item.whereSearchText = locationOption;
-      item.whereAreaUsed = true;
+      itemLocation.whereSearchText = locationOption;
+      itemLocation.whereAreaUsed = true;
+      this.newItemEvent.emit(itemLocation);
     }
-
-    if (dataOption || locationOption) {
-      console.log(item)
-      this.newItemEvent.emit(item);
-    }
-    this.newItemEvent.emit(item);
   }
 
   displayFn(option: any): string {
