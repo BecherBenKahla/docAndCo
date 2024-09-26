@@ -223,50 +223,52 @@ export class SearchBarComponent implements OnInit {
 
   private _filterLocation(value: string, data: any, type: number): any[] {
     this.toHighlight = value;
-    // Check if the input starts with a number
-    if (!isNaN(Number(value))) {
-      // Case 1: 1 digit, return nothing
-      if (value.length === 1) {
-        return [];
-      }
-
-      // Case 2: 2 digits, return departement
-      if (value.length === 2 && type == 1) {
+  
+    // Normalize and clean up the input value (removing accents, apostrophes, hyphens, etc.)
+    const normalizedValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    
+    // Prepare the search terms by splitting the input into parts for matching (e.g., "Saint Mau")
+    const searchParts = normalizedValue.split(/\s+/).filter(part => part.length > 0); // Split by spaces, ignore empty parts
+  
+    // Case for numbers (postal code or department code search)
+    if (!isNaN(Number(normalizedValue))) {
+      if (normalizedValue.length === 1) return [];
+      
+      if (normalizedValue.length === 2 && type === 1) {
         return data.filter((option: Departement) => {
-          const number = option.num_dep.toString();
-          return number.startsWith(value);  // Return matching departement number with 2 digits
+          return option.num_dep.startsWith(normalizedValue); // Match department codes
         });
       }
-
-      // Case 3: 3 digits, return postal code + city name with these 3 digits
-      if (value.length >= 3 && type == 0) {
+  
+      if (normalizedValue.length >= 3 && type === 0) {
         return data.filter((option: Location) => {
-          const postalCode = option.postalCode.toString();
-          return postalCode.startsWith(value);  // Return matching postal codes with 3 digits
+          return option.postalCode.startsWith(normalizedValue); // Match postal codes
         });
       }
-
     } else {
-      // Case 4: 1 or 2 letters, return nothing
-      if (value.length <= 2) {
-        return [];
-      }
-      if (type == 0) {
-        // Case 5: 3 or more letters, return city names where any word starts with these 3 letters
+      // Handling for strings (city or department names)
+      
+      if (normalizedValue.length <= 2) return []; // Skip if search value is too short
+  
+      if (type === 0) {
+        // For location/city names
         return data.filter((option: Location) => {
           const city = option.city ? option.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-          return city.split(' ').some(word => word.startsWith(value.toLowerCase()));
+          const cityWords = city.split(/[\s\-']/); // Split on spaces, hyphens, and apostrophes
+          return searchParts.every(part => cityWords.some(word => word.startsWith(part))); // Check each search part
         });
       }
-      if (type == 1) {
-        // Case 5: 3 or more letters, return departement names where any word starts with these 3 letters
+  
+      if (type === 1) {
+        // For department names
         return data.filter((option: Departement) => {
-          const departementName = option.dep_name ? option.dep_name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
-          return departementName.split(' ').some(word => word.startsWith(value.toLowerCase()));
+          const depName = option.dep_name ? option.dep_name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+          const depWords = depName.split(/[\s\-']/); // Split on spaces, hyphens, and apostrophes
+          return searchParts.every(part => depWords.some(word => word.startsWith(part))); // Check each search part
         });
       }
     }
-
+  
     // Default return empty array if no conditions match
     return [];
   }
