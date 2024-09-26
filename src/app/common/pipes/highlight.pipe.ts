@@ -32,7 +32,7 @@ export class HighlightPipe implements PipeTransform {
       .split(/\s+/) // Split search input by spaces for multiple word matches
       .filter((t: any) => t.length > 0); // Remove empty values
 
-    const baseRegex = new RegExp(`(${pattern.join('|')})`.replace(accentRegex, m => {
+    const baseRegex = new RegExp(`\\b(${pattern.join('|')})`.replace(accentRegex, m => {
       return accentMap[m] || m;
     }), 'gi'); // Create a dynamic regex for each search term, handle accents
 

@@ -11,8 +11,6 @@
                     <div class="content">
                         <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'"
                             style="margin-right: 5px;"></span>
-                        <i id="R" class="fas fa-r"></i>
-                        <i id="trophy" class='fas fa-trophy'></i>
                     </div>
                 </div>
             </mat-option>
@@ -27,8 +25,8 @@
                             style="margin-right: 5px;"> </span>
                         <span [innerHTML]="(option.lastName || '') | highlight: toHighlight : 'highlight'"
                             style="margin-right: 5px;"></span>
-                        <i id="R" class="fas fa-r"></i>
-                        <i id="trophy" class='fas fa-trophy'></i>
+                        <i id="R" *ngIf="option.isReceiver" class="fas fa-r"></i>
+                        <!-- ************* <i id="trophy" class='fas fa-trophy'></i> ***********  !--> 
                         <p>{{option.medicalSpecialtyNames}} - {{option.medicalStructureName}} -
                             {{option.medicalStructureCity}}</p>
                     </div>
@@ -42,8 +40,6 @@
                     <div class="content">
                         <span [innerHTML]="(option.name || '') | highlight: toHighlight : 'highlight'"
                             style="margin-right: 5px;" git chec></span>
-                        <i id="R" class="fas fa-r"></i>
-                        <i id="trophy" class='fas fa-trophy'></i>
                         <p>{{option.city}}</p>
                     </div>
                 </div>
