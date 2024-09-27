@@ -5,8 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class HighlightPipe implements PipeTransform {
 
-  transform(text: string, search:any, cssClass: string): string {
-    /** accent insensitive  and case insensitive */
+  transform(text: string, search: any, cssClass: string): string {
+    if (!search || !text) {
+      return text;
+    }
+
+    /** Accent insensitive and case insensitive */
     const accentMap: { [key: string]: string } = {
       ae: '(ae|æ|ǽ|ǣ)',
       a:  '(a|á|ă|ắ|ặ|ằ|ẳ|ẵ|ǎ|â|ấ|ậ|ầ|ẩ|ẫ|ä|ǟ|ȧ|ǡ|ạ|ȁ|à|ả|ȃ|ā|ą|ᶏ|ẚ|å|ǻ|ḁ|ⱥ|ã)',
@@ -19,17 +23,20 @@ export class HighlightPipe implements PipeTransform {
     };
     const accentRegex = new RegExp(Object.keys(accentMap).join('|'), 'g');
 
-    const pattern = search.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    // Normalize and prepare the search pattern to handle multiple words
+    const pattern = search
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove accents
       .toLowerCase()
-      .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")
-      .split(' ')
-      .filter((t: any) => t.length > 0);
+      .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") // Escape regex special characters
+      .split(/\s+/) // Split search input by spaces for multiple word matches
+      .filter((t: any) => t.length > 0); // Remove empty values
 
-    const baseRegex = new RegExp(`\\b(${pattern})`.replace(accentRegex, m => {
+    const baseRegex = new RegExp(`\\b(${pattern.join('|')})`.replace(accentRegex, m => {
       return accentMap[m] || m;
-    }), 'gi');
+    }), 'gi'); // Create a dynamic regex for each search term, handle accents
 
-    return search ? text.replace(baseRegex, (match:any) => `<span class="${cssClass}">${match}</span>`) : text;
+    // Replace the matched text with the highlighted span
+    return text.replace(baseRegex, (match: any) => `<span class="${cssClass}">${match}</span>`);
   }
 }
-
