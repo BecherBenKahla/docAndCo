@@ -76,11 +76,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.persons = this.data[0];
-    this.specialities = this.data[1];
-    this.structures = this.data[2];
-    this.locations = this.data[3];
-    this.departements = this.data[4];
+    [this.persons, this.specialities, this.structures, this.locations, this.departements] = this.data;
   }
 
   private _filter(value: string, data: any, type: number): any[] {
@@ -140,16 +136,11 @@ export class SearchBarComponent implements OnInit {
 
   onOptionSelected(event: any): void {
     const selectedValue = event.option.value;
+    const hasPasswordExpirationDelay = selectedValue?.hasOwnProperty('passwordExpirationDelay') ?? false;
 
-    if (selectedValue && selectedValue.hasOwnProperty('passwordExpirationDelay')) {
-      this.isSpecialtySelected = true;
-      this.isQuiSelected = true;  // Something is selected
-      this.searchLocationControl.enable(); // Enable "Où" field if a specialty is selected
-    } else {
-      this.isSpecialtySelected = false;
-      this.isQuiSelected = true;
-      this.searchLocationControl.disable();
-    }
+    this.isSpecialtySelected = hasPasswordExpirationDelay;
+    this.isQuiSelected = true;
+    hasPasswordExpirationDelay ? this.searchLocationControl.enable() : this.searchLocationControl.disable();
     this.getData(selectedValue, this.location);
 
   }
@@ -161,15 +152,13 @@ export class SearchBarComponent implements OnInit {
     this.onSearch();
   }
 
-
-
   getData(dataOption: any, locationOption: any) {
     var itemSearch: any = {}
     var itemLocation: any = {}
     if (dataOption) {
       itemSearch.whoAreaUsed = true;
       itemSearch.sectionUsed = "",
-      itemSearch.showDetail = false;
+        itemSearch.showDetail = false;
       itemSearch.dataPerson = {};
       itemSearch.idSpeciality = -1;
       itemSearch.selectedHospitalData = {};
@@ -200,7 +189,7 @@ export class SearchBarComponent implements OnInit {
         } else {
           itemSearch.whoSearchText = dataOption.name;
           itemSearch.sectionUsed = "SDS",
-          itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
+            itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
         }
       }
       this.newItemEvent.emit(itemSearch);
@@ -220,23 +209,23 @@ export class SearchBarComponent implements OnInit {
 
   private _filterLocation(value: string, data: any, type: number): any[] {
     this.toHighlight = value;
-  
+
     // Normalize and clean up the input value (removing accents, apostrophes, hyphens, etc.)
     const normalizedValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    
+
     // Prepare the search terms by splitting the input into parts for matching (e.g., "Saint Mau")
     const searchParts = normalizedValue.split(/\s+/).filter(part => part.length > 0); // Split by spaces, ignore empty parts
-  
+
     // Case for numbers (postal code or department code search)
     if (!isNaN(Number(normalizedValue))) {
       if (normalizedValue.length === 1) return [];
-      
+
       if (normalizedValue.length === 2 && type === 1) {
         return data.filter((option: Departement) => {
           return option.num_dep.startsWith(normalizedValue); // Match department codes
         });
       }
-  
+
       if (normalizedValue.length >= 3 && type === 0) {
         return data.filter((option: Location) => {
           return option.postalCode.startsWith(normalizedValue); // Match postal codes
@@ -244,9 +233,9 @@ export class SearchBarComponent implements OnInit {
       }
     } else {
       // Handling for strings (city or department names)
-      
+
       if (normalizedValue.length <= 2) return []; // Skip if search value is too short
-  
+
       if (type === 0) {
         // For location/city names
         return data.filter((option: Location) => {
@@ -255,7 +244,7 @@ export class SearchBarComponent implements OnInit {
           return searchParts.every(part => cityWords.some(word => word.startsWith(part))); // Check each search part
         });
       }
-  
+
       if (type === 1) {
         // For department names
         return data.filter((option: Departement) => {
@@ -265,7 +254,7 @@ export class SearchBarComponent implements OnInit {
         });
       }
     }
-  
+
     // Default return empty array if no conditions match
     return [];
   }
@@ -290,8 +279,10 @@ export class SearchBarComponent implements OnInit {
 
   // Handle typing in Qui (Who) input
   onQuiInputChange(): void {
-    this.isQuiSelected = false;  // Reset selection when typing
-    this.isSpecialtySelected = false;  // Specialty not selected when typing starts
+    // Reset selection when typing
+    this.isQuiSelected = false;
+    // Specialty not selected when typing starts
+    this.isSpecialtySelected = false;
 
     // Disable "Où" field while typing in "Qui"
     this.searchLocationControl.disable();
@@ -315,24 +306,16 @@ export class SearchBarComponent implements OnInit {
   }
 
   clearQuiField(): void {
-    this.searchTerm = '';  // Clear "Qui" if no valid selection
+    // Clear "Qui" if no valid selection
+    this.searchTerm = '';
     this.searchLocationControl.enable();
   }
 
   clearOuField(): void {
-    this.location = '';            // Clear the input value
-    this.isOuSelected = false;     // Reset the selected state
-    this.isTypingOu = false;       // Reset the typing state
-    this.searchControl.enable();   // Re-enable the "Qui" input
+    this.location = '';
+    this.isOuSelected = false;
+    this.isTypingOu = false;
+    this.searchControl.enable();
     this.isLocationSelected = false;
   }
-
-  onSearchFocus() {
-    // this.searchLocationControl.reset();
-  }
-
-  onLocationFocus() {
-    // this.searchControl.reset();
-  }
-
 }

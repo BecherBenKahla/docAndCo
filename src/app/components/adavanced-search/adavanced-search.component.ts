@@ -13,6 +13,8 @@ import { DataService } from 'src/app/services/data/data.service';
 })
 export class AdavancedSearchComponent implements OnInit {
 
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
   displayedColumns: string[] = ['profil', 'identite', 'specialite', 'structure', 'localisation', 'distance', 'actions'];
   dataSource: MatTableDataSource<any>;
   data: any[] = [];
@@ -40,8 +42,6 @@ export class AdavancedSearchComponent implements OnInit {
   specialities: any[] = [];
   hospitals: any[] = [];
   filteredData: any[] = [];
-
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   constructor(
     private advancedSearchService: AdvancedSearchService,
