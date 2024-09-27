@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { combineLatest, finalize, tap } from 'rxjs';
 import { Chip } from 'src/app/common';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
-import { DataService } from 'src/app/services/data/data.service';
+import { calculateDistance, DataService } from 'src/app/services/data/data.service';
 
 @Component({
   selector: 'app-adavanced-search',
@@ -65,51 +65,73 @@ export class AdavancedSearchComponent implements OnInit {
       tap({
         next: ([persons, specialities, structures, locations, departements]) => {
           this.combinedDatas = [persons, specialities, structures, locations, departements];
-          this.persons = [...persons.map(person => ({
-            profil: 'person',
-            identite: `${person.lastName} ${person.firstName} `,
-            firstName: person.firstName,
-            lastName: person.lastName,
-            specialite: person.medicalSpecialtyNames,
-            structure: person.medicalStructureName,
-            localisation: person.medicalStructurePostalCode + ', ' + person.medicalStructureCity,
-            distance: this.calculateDistance(person.medicalStructureLatitude ? person.medicalStructureLatitude : 0, person.medicalStructureLongitude ? person.medicalStructureLongitude : 0, 46.202981, 6.249574) + '  km',
-            isFavourite: person.isFavourite,
-            isReceiver: person.isReceiver,
-            nbAddressedClaims: person.nbAddressedClaims,
-            nbDeniedClaims: person.nbDeniedClaims,
-            actions: 'View'
-          }))];
-          this.specialities = [...specialities.map(speciality => ({
-            profil: 'speciality',
-            identite: speciality.name,
-            specialite: "",
-            specialiteId: speciality.medicalSpecialtyId,
-            structure: "",
-            localisation: "",
-            distance: "",
-            actions: 'View'
-          })),]
-          this.hospitals = [
-            ...structures.map(structure => ({
-              profil: 'hospital',
-              identite: structure.name,
-              specialite: structure.medicalSpecialties?.length + ' spécialité(s) disponible(s)',
-              specialities: structure.medicalSpecialties,
-              structure: structure.name,
-              localisation: structure.postalCode + ', ' + structure.city,
-              distance: this.calculateDistance(structure.latitude ? structure.latitude : 0, structure.longitude ? structure.longitude : 0, 46.202981, 6.249574) + '  km',
-              actions: 'View'
-            }))];
-
-          this.data = [...this.hospitals, ...this.persons, ...this.specialities];
-          this.filteredData = this.data;
-          this.dataSource = new MatTableDataSource(this.data);
-          this.dataSource.paginator = this.paginator;
+          const userLatLon = {
+            medicalStructureLatitude: persons[0].medicalStructureLatitude,
+            medicalStructureLongitude: persons[0].medicalStructureLongitude
+          };
+          this.processData(persons, specialities, structures, userLatLon);
         }
       }),
       finalize(() => this.isLoading = false)
     ).subscribe();
+  }
+
+  processData(persons: any[], specialities: any[], structures: any[], userLatLon: any) {
+    this.persons = persons.map(person => this.mapPersonData(person, userLatLon));
+    this.specialities = specialities.map(speciality => this.mapSpecialityData(speciality));
+    this.hospitals = structures.map(structure => this.mapStructureData(structure, userLatLon));
+    this.data = [...this.hospitals, ...this.persons, ...this.specialities];
+    this.filteredData = this.data;
+    this.updateDataSource();
+  }
+
+  mapPersonData(person: any, userLatLon: any) {
+    return {
+      profil: 'person',
+      identite: `${person.lastName} ${person.firstName} `,
+      firstName: person.firstName,
+      lastName: person.lastName,
+      specialite: person.medicalSpecialtyNames,
+      structure: person.medicalStructureName,
+      localisation: person.medicalStructurePostalCode + ', ' + person.medicalStructureCity,
+      distance: calculateDistance(person.medicalStructureLatitude ? person.medicalStructureLatitude : 0, person.medicalStructureLongitude ? person.medicalStructureLongitude : 0, userLatLon) + '  km',
+      isFavourite: person.isFavourite,
+      isReceiver: person.isReceiver,
+      nbAddressedClaims: person.nbAddressedClaims,
+      nbDeniedClaims: person.nbDeniedClaims,
+      actions: 'View'
+    };
+  }
+
+  mapSpecialityData(speciality: any) {
+    return {
+      profil: 'speciality',
+      identite: speciality.name,
+      specialite: "",
+      specialiteId: speciality.medicalSpecialtyId,
+      structure: "",
+      localisation: "",
+      distance: "",
+      actions: 'View'
+    };
+  }
+
+  mapStructureData(structure: any, userLatLon: any) {
+    return {
+      profil: 'hospital',
+      identite: structure.name,
+      specialite: structure.medicalSpecialties?.length + ' spécialité(s) disponible(s)',
+      specialities: structure.medicalSpecialties,
+      structure: structure.name,
+      localisation: structure.postalCode + ', ' + structure.city,
+      distance: calculateDistance(structure.latitude ? structure.latitude : 0, structure.longitude ? structure.longitude : 0, userLatLon) + '  km',
+      actions: 'View'
+    };
+  }
+
+  updateDataSource() {
+    this.dataSource = new MatTableDataSource(this.data);
+    this.dataSource.paginator = this.paginator;
   }
 
   updateChips(chips: Chip[], searchTerm: string, location: string, item: Chip): Chip[] {
@@ -132,7 +154,6 @@ export class AdavancedSearchComponent implements OnInit {
     return updatedChips;
   }
 
-
   removeChip(index: number) {
     this.chips.splice(index, 1);
     this.applyChipsFilter();
@@ -154,9 +175,6 @@ export class AdavancedSearchComponent implements OnInit {
     this.chips.forEach(chip => {
       if (chip.sectionUsed === "SPECIALTIE") {
         specialitySectionUsed = true;
-        this.showHospitals = true;
-        this.showPractitioners = true;
-        this.showReceivers = true;
         this.sortBy = "distance"
         filteredStructures = filteredStructures.filter(structure =>
           structure.specialities && structure.specialities.includes(chip.idSpeciality)
@@ -169,8 +187,6 @@ export class AdavancedSearchComponent implements OnInit {
 
       if (chip.whereAreaUsed) {
         this.showHospitals = false;
-        this.showPractitioners = true;
-        this.showReceivers = true;
         this.sortBy = "distance";
         const departmentCode = chip.whereSearchText.split(',')[0].trim();
         const lengthBeforeComma = this.dataService.getLengthBeforeComma(departmentCode);
@@ -213,8 +229,6 @@ export class AdavancedSearchComponent implements OnInit {
       if (chip.sectionUsed === "SDS") {
         sdsSectionUsed = true;
         this.showHospitals = false;
-        this.showPractitioners = true;
-        this.showReceivers = true;
         this.sortBy = "lastName";
         filteredSpecialities = filteredSpecialities.filter(specialty =>
           specialty.specialiteId && chip.selectedHospitalData.medicalSpecialties.includes(specialty.specialiteId)
@@ -237,8 +251,6 @@ export class AdavancedSearchComponent implements OnInit {
 
       if (sdsSectionUsed && item.sectionUsed == "") {
         this.showHospitals = false;
-        this.showPractitioners = true;
-        this.showReceivers = true;
         this.sortBy = "lastName"
         filteredSpecialities = filteredSpecialities.filter(specialty =>
           specialty.identite && specialty.identite.toLowerCase().includes(item.whoSearchText)
@@ -253,15 +265,28 @@ export class AdavancedSearchComponent implements OnInit {
 
     if (this.chips.length === 0 && !this.dataService.isObjectEmpty(item)) {
       this.showHospitals = false;
-      this.showPractitioners = true;
-      this.showReceivers = true;
       this.sortBy = "distance";
-      filteredPersons = filteredPersons.filter(person =>
-        person.firstName.toLowerCase().startsWith(item.whoSearchText.toLowerCase()) ||
-        person.lastName.toLowerCase().startsWith(item.whoSearchText.toLowerCase()) ||
-        person.specialite && (person.specialite.toLowerCase().includes(item.whoSearchText)) ||
-        person.structure && (person.structure.toLowerCase().includes(item.whoSearchText))
-      );
+      const normalizeText = (text: string) => text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const searchText = normalizeText(item.whoSearchText);
+      const searchParts = searchText.split(' ').filter((part: string) => part.trim() !== '');
+
+      filteredPersons = filteredPersons.filter(person => {
+        const firstName = normalizeText(person.firstName);
+        const lastName = normalizeText(person.lastName);
+        const specialite = person.specialite ? normalizeText(person.specialite) : "";
+        const structure = person.structure ? normalizeText(person.structure) : "";
+
+        const matchesSingleTerm = [firstName, lastName, specialite, structure].some(field =>
+          field.startsWith(searchText) || field.includes(searchText)
+        );
+
+        const matchesBothNames = searchParts.length === 2 &&
+          firstName.startsWith(searchParts[0]) &&
+          lastName.startsWith(searchParts[1]);
+
+        return matchesSingleTerm || matchesBothNames;
+      });
+
       datas = [...filteredPersons];
     }
 
@@ -307,8 +332,7 @@ export class AdavancedSearchComponent implements OnInit {
           }
           return 0;
         default:
-          this.dataSource = new MatTableDataSource(this.data);
-          this.dataSource.paginator = this.paginator;
+          this.updateDataSource()
           return 0;
       }
     });
@@ -351,40 +375,15 @@ export class AdavancedSearchComponent implements OnInit {
   }
 
   getItemsFromChild(items: any) {
-    this.showDetail = items.showDetail ? items.showDetail : false;
+    this.showDetail = !!items.showDetail;
     if (!this.showDetail) {
-      if (items.sectionUsed != "")
-        this.chips = this.updateChips(this.chips, items.whoSearchText, items.whereSearchText, items);
-
-      if (items.whereSearchText && items.whereSearchText != "")
-        this.chips = this.updateChips(this.chips, items.whoSearchText, items.whereSearchText, items);
-
+      if (items.sectionUsed != "") {
+        this.chips = this.updateChips(this.chips, items.whoSearchText || "", items.whereSearchText || "", items);
+      }
     } else {
       this.chips = [];
-      this.dataPerson = items.dataPerson ? items.dataPerson : {};
+      this.dataPerson = items.dataPerson || {};
     }
     this.applyChipsFilter(items);
   }
-
-
-  calculateDistance(destLat: number, destLng: number, srcLat: number, srcLng: number): number {
-
-    if (srcLat === 0 || destLat === 0) return 0;
-
-    const p = 0.017453292519943295;    // Math.PI / 180
-
-    const c = Math.cos;
-
-    const a = 0.5 - c((destLat - srcLat) * p) / 2 +
-
-      c(srcLat * p) * c(destLat * p) *
-
-      (1 - c((destLng - srcLng) * p)) / 2;
-
-    const result = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-
-    return Math.round(result * 100) / 100;
-
-  }
-
 }
