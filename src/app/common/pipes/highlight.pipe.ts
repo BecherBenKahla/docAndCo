@@ -22,21 +22,20 @@ export class HighlightPipe implements PipeTransform {
       u:  '(u|ú|ŭ|ǔ|û|ṷ|ü|ǘ|ǚ|ǜ|ǖ|ṳ|ụ|ű|ȕ|ù|ủ|ư|ứ|ự|ừ|ử|ữ|ȗ|ū|ṻ|ų|ᶙ|ů|ũ|ṹ|ṵ)'
     };
     const accentRegex = new RegExp(Object.keys(accentMap).join('|'), 'g');
-
-    // Normalize and prepare the search pattern to handle multiple words
-    const pattern = search
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Remove accents
+    // Normalize and prepare search term
+    const pattern = search.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove accents for the search term
       .toLowerCase()
-      .replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") // Escape regex special characters
-      .split(/\s+/) // Split search input by spaces for multiple word matches
-      .filter((t: any) => t.length > 0); // Remove empty values
+      .replace(/[\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") // Escape regex special characters
+      .split(/[\s-]+/) // Split search input by spaces or hyphens
+      .filter((t:any) => t.length > 0) // Remove empty values
+      .map((term:any) => term.replace(accentRegex, (m:any) => accentMap[m] || m)) // Map accented characters
+      .join('|');
 
-    const baseRegex = new RegExp(`\\b(${pattern.join('|')})`.replace(accentRegex, m => {
-      return accentMap[m] || m;
-    }), 'gi'); // Create a dynamic regex for each search term, handle accents
+      // Create a regex that treats spaces, hyphens, and apostrophes as interchangeable
+    const baseRegex = new RegExp(`(?:^|\\s|[\\-'’( )])(${pattern.replace(/ /g, '[\\s-]')})`, 'gi');
 
-    // Replace the matched text with the highlighted span
-    return text.replace(baseRegex, (match: any) => `<span class="${cssClass}">${match}</span>`);
+    return text.replace(baseRegex, (match, p1) => {
+      return match.replace(p1, `<span class="${cssClass}">${p1}</span>`);
+    });
   }
 }

@@ -5,7 +5,7 @@ import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
 import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
-import { calculateDistance } from 'src/app/services/data/data.service';
+import { calculateDistance, sortData } from 'src/app/services/data/data.service';
 
 
 
@@ -83,47 +83,26 @@ export class SearchBarComponent implements OnInit {
     this.toHighlight = value;
     const filterValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     var result = data.filter((option: any) => {
-      var name = '';
-      if (type == 0) {
-        name = option.firstName.concat(' ' + option.lastName);
-      } else {
-        name = option.name;
-      }
+      var name = type == 0 ? option.firstName.concat(' ' + option.lastName) : option.name;
       const words = name.split(/[\s-]+/).map((part: any) => part.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-      return words.some((word: any) => word.startsWith(filterValue))
+      const filterParts = filterValue.toLowerCase().split(/[\s-]+/).map((part: any) =>
+        part.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      );
+      
+      // Check if all filter parts are matched
+      return filterParts.every((filterPart: string) => {
+        const matchesWithoutPrefix = words.some((word:any) => word.startsWith(filterPart));
+        const matchesWithPrefix = words.some((word :any) => {
+          const regex = /^[a-zA-Z]['’]/; // Matches any letter followed by an apostrophe
+          const regexPa = /\([a-zA-Z]+/;
+          const wordWithoutPrefix = regex.test(word) ? word.substring(2) : regexPa.test(word) ? word.substring(1) : word; // Remove the prefix if it exists
+          return wordWithoutPrefix.startsWith(filterPart);
+        });
+        return matchesWithoutPrefix || matchesWithPrefix; // Return true if either match found
+      });
+      
     });
-
-    const user = this.persons[0];
-
-    return result.sort((a: any, b: any) => {
-      const hasCoordinates = user.medicalStructureLatitude !== null && user.medicalStructureLongitude !== null;
-      if (type == 0) {
-        if (hasCoordinates) {
-          const distanceA = calculateDistance(a.medicalStructureLatitude, a.medicalStructureLongitude, user);
-          const distanceB = calculateDistance(b.medicalStructureLatitude, b.medicalStructureLongitude, user);
-          return distanceA - distanceB;
-        }
-        else {
-          const lastNameComparison = a.lastName.localeCompare(b.lastName);
-          if (lastNameComparison === 0) {
-            return a.firstName.localeCompare(b.firstName);
-          }
-          return lastNameComparison;
-        }
-      } else {
-        if (type == 2) {
-          const hasCoordinatesA = a.latitude !== null && a.longitude !== null;
-          const hasCoordinatesB = b.latitude !== null && b.longitude !== null;
-          if (hasCoordinates && hasCoordinatesA && hasCoordinatesB) {
-            const distanceA = calculateDistance(a.latitude, a.longitude, user);
-            const distanceB = calculateDistance(b.latitude, b.longitude, user);
-            return distanceA - distanceB;
-          }
-        }
-        return a.name.localeCompare(b.name)
-      }
-
-    });
+    return sortData(result, this.persons[0], type);
   }
 
   onSearch() {
@@ -153,12 +132,11 @@ export class SearchBarComponent implements OnInit {
   }
 
   getData(dataOption: any, locationOption: any) {
-    var itemSearch: any = {}
-    var itemLocation: any = {}
     if (dataOption) {
+      var itemSearch: any = {}
       itemSearch.whoAreaUsed = true;
       itemSearch.sectionUsed = "",
-        itemSearch.showDetail = false;
+      itemSearch.showDetail = false;
       itemSearch.dataPerson = {};
       itemSearch.idSpeciality = -1;
       itemSearch.selectedHospitalData = {};
@@ -189,13 +167,14 @@ export class SearchBarComponent implements OnInit {
         } else {
           itemSearch.whoSearchText = dataOption.name;
           itemSearch.sectionUsed = "SDS",
-            itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
+          itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
         }
       }
       this.newItemEvent.emit(itemSearch);
     }
 
     if (locationOption) {
+      var itemLocation: any = {}
       itemLocation.whereSearchText = locationOption;
       itemLocation.whereAreaUsed = true;
       this.newItemEvent.emit(itemLocation);

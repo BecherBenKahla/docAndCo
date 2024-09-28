@@ -44,3 +44,35 @@ export function calculateDistanceValue(destLat: number, destLng: number, srcLat:
   const result = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
   return Math.round(result * 100) / 100;
 }
+
+export function sortData(result:any, user:any, type:any){
+  return result.sort((a: any, b: any) => {
+    const hasCoordinates = user.medicalStructureLatitude !== null && user.medicalStructureLongitude !== null;
+    if (type == 0) {
+      if (hasCoordinates) {
+        const distanceA = calculateDistance(a.medicalStructureLatitude, a.medicalStructureLongitude, user);
+        const distanceB = calculateDistance(b.medicalStructureLatitude, b.medicalStructureLongitude, user);
+        return distanceA - distanceB;
+      }
+      else {
+        const lastNameComparison = a.lastName.localeCompare(b.lastName);
+        if (lastNameComparison === 0) {
+          return a.firstName.localeCompare(b.firstName);
+        }
+        return lastNameComparison;
+      }
+    } else {
+      if (type == 2) {
+        const hasCoordinatesA = a.latitude !== null && a.longitude !== null;
+        const hasCoordinatesB = b.latitude !== null && b.longitude !== null;
+        if (hasCoordinates && hasCoordinatesA && hasCoordinatesB) {
+          const distanceA = calculateDistance(a.latitude, a.longitude, user);
+          const distanceB = calculateDistance(b.latitude, b.longitude, user);
+          return distanceA - distanceB;
+        }
+      }
+      return a.name.localeCompare(b.name)
+    }
+
+  });
+}
