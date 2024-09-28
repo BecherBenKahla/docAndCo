@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { combineLatest, finalize, tap } from 'rxjs';
 import { Chip } from 'src/app/common';
 import { AdvancedSearchService } from 'src/app/services/advanced-search/advanced-search.service';
-import { calculateDistance, DataService } from 'src/app/services/data/data.service';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
   selector: 'app-adavanced-search',
@@ -21,10 +21,10 @@ export class AdavancedSearchComponent implements OnInit {
   sortBy = '';
   isLoading = true;
   chips: Chip[] = [];
-  showHospitals: boolean = true;
-  showReceivers: boolean = true;
-  showPractitioners: boolean = true;
-  showDetail: boolean = false;
+  showHospitals = true;
+  showReceivers = true;
+  showPractitioners = true;
+  showDetail = false;
   dataPerson = {
     firstName: "",
     lastName: "",
@@ -94,7 +94,7 @@ export class AdavancedSearchComponent implements OnInit {
       specialite: person.medicalSpecialtyNames,
       structure: person.medicalStructureName,
       localisation: person.medicalStructurePostalCode + ', ' + person.medicalStructureCity,
-      distance: calculateDistance(person.medicalStructureLatitude ? person.medicalStructureLatitude : 0, person.medicalStructureLongitude ? person.medicalStructureLongitude : 0, userLatLon) + '  km',
+      distance: this.dataService.calculateDistance(person.medicalStructureLatitude ? person.medicalStructureLatitude : 0, person.medicalStructureLongitude ? person.medicalStructureLongitude : 0, userLatLon) + '  km',
       isFavourite: person.isFavourite,
       isReceiver: person.isReceiver,
       nbAddressedClaims: person.nbAddressedClaims,
@@ -124,7 +124,7 @@ export class AdavancedSearchComponent implements OnInit {
       specialities: structure.medicalSpecialties,
       structure: structure.name,
       localisation: structure.postalCode + ', ' + structure.city,
-      distance: calculateDistance(structure.latitude ? structure.latitude : 0, structure.longitude ? structure.longitude : 0, userLatLon) + '  km',
+      distance: this.dataService.calculateDistance(structure.latitude ? structure.latitude : 0, structure.longitude ? structure.longitude : 0, userLatLon) + '  km',
       actions: 'View'
     };
   }
@@ -386,4 +386,5 @@ export class AdavancedSearchComponent implements OnInit {
     }
     this.applyChipsFilter(items);
   }
+
 }

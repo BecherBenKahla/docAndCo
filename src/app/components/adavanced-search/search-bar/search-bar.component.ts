@@ -5,7 +5,7 @@ import { map, startWith } from 'rxjs';
 import { Person, Specialty, Structure } from 'src/app/common';
 import { Departement } from 'src/app/common/models/departement.model';
 import { Location } from 'src/app/common/models/location.model';
-import { calculateDistance, sortData } from 'src/app/services/data/data.service';
+import { DataService } from 'src/app/services/data/data.service';
 
 
 
@@ -24,8 +24,8 @@ export class SearchBarComponent implements OnInit {
   searchControl = new FormControl('');
   searchLocationControl = new FormControl('');
 
-  searchTerm: string = '';
-  location: string = '';
+  searchTerm = '';
+  location = '';
   persons: Person[] = [];
   specialities: Specialty[] = [];
   structures: Structure[] = [];
@@ -37,17 +37,17 @@ export class SearchBarComponent implements OnInit {
   filteredStructures: any;
   filteredLocation: any;
   filteredDepartements: any;
-  toHighlight: string = '';
+  toHighlight = '';
 
   // Variables to track if user is typing or has selected a value
-  isTypingQui: boolean = false;
-  isTypingOu: boolean = false;
-  isQuiSelected: boolean = false;
-  isOuSelected: boolean = false;
-  isSpecialtySelected: boolean = false;
-  isLocationSelected: boolean = false;
+  isTypingQui = false;
+  isTypingOu = false;
+  isQuiSelected = false;
+  isOuSelected = false;
+  isSpecialtySelected = false;
+  isLocationSelected = false;
 
-  constructor() {
+  constructor(private dataService: DataService) {
     this.filteredPersons = this.searchControl.valueChanges.pipe(
       startWith(''),
       map(value => value.length >= 1 ? this._filter(value || '', this.persons, 0) : []),
@@ -88,29 +88,29 @@ export class SearchBarComponent implements OnInit {
       const filterParts = filterValue.toLowerCase().split(/[\s-]+/).map((part: any) =>
         part.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       );
-      
+
       // Check if all filter parts are matched
       return filterParts.every((filterPart: string) => {
-        const matchesWithoutPrefix = words.some((word:any) => word.startsWith(filterPart));
-        const matchesWithPrefix = words.some((word :any) => {
-          const regex = /^[a-zA-Z]['’]/; // Matches any letter followed by an apostrophe
+        const matchesWithoutPrefix = words.some((word: any) => word.startsWith(filterPart));
+        const matchesWithPrefix = words.some((word: any) => {
+          // Matches any letter followed by an apostrophe
+          const regex = /^[a-zA-Z]['’]/;
           const regexPa = /\([a-zA-Z]+/;
-          const wordWithoutPrefix = regex.test(word) ? word.substring(2) : regexPa.test(word) ? word.substring(1) : word; // Remove the prefix if it exists
+          // Remove the prefix if it exists
+          const wordWithoutPrefix = regex.test(word) ? word.substring(2) : regexPa.test(word) ? word.substring(1) : word;
           return wordWithoutPrefix.startsWith(filterPart);
         });
-        return matchesWithoutPrefix || matchesWithPrefix; // Return true if either match found
+        // Return true if either match found
+        return matchesWithoutPrefix || matchesWithPrefix;
       });
-      
+
     });
-    return sortData(result, this.persons[0], type);
+    return this.dataService.sortData(result, this.persons[0], type);
   }
 
   onSearch() {
-    if (this.isLocationSelected) {
-      this.getData(this.searchTerm, this.location);
-    } else {
-      this.getData(this.searchTerm, null);
-    }
+    let location = this.isLocationSelected ? this.location : null;
+    this.getData(this.searchTerm, location);
   }
 
   onOptionSelected(event: any): void {
@@ -136,7 +136,7 @@ export class SearchBarComponent implements OnInit {
       var itemSearch: any = {}
       itemSearch.whoAreaUsed = true;
       itemSearch.sectionUsed = "",
-      itemSearch.showDetail = false;
+        itemSearch.showDetail = false;
       itemSearch.dataPerson = {};
       itemSearch.idSpeciality = -1;
       itemSearch.selectedHospitalData = {};
@@ -167,7 +167,7 @@ export class SearchBarComponent implements OnInit {
         } else {
           itemSearch.whoSearchText = dataOption.name;
           itemSearch.sectionUsed = "SDS",
-          itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
+            itemSearch.selectedHospitalData = { medicalSpecialties: dataOption.medicalSpecialties };
         }
       }
       this.newItemEvent.emit(itemSearch);
@@ -184,7 +184,6 @@ export class SearchBarComponent implements OnInit {
   displayFn(option: any): string {
     return option ? option.name ? option.name : option.fullName : '';
   }
-
 
   private _filterLocation(value: string, data: any, type: number): any[] {
     this.toHighlight = value;
@@ -276,7 +275,8 @@ export class SearchBarComponent implements OnInit {
   onOuInputChange(): void {
     // If the user starts typing in "Où" without selecting a specialty in "Qui"
     if (!this.isQuiSelected && !this.isSpecialtySelected) {
-      this.searchTerm = ''; // Clear the "Qui" field if no selection was made
+      // Clear the "Qui" field if no selection was made
+      this.searchTerm = '';
     }
     this.searchControl.disable();
     if (this.location === '' || this.isSpecialtySelected) {
