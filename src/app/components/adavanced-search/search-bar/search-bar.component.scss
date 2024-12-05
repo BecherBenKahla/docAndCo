@@ -1,5 +1,5 @@
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-    border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
@@ -11,13 +11,13 @@
 ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
   border-radius: 0 !important;
 }
-  
+
 
 button.mat-flat-button {
- border-radius: 0 !important;
+  border-radius: 0 !important;
 }
-  
- 
+
+
 .mat-form-field-appearance-outline .mat-form-field-flex {
   margin-top: 0 !important;
 }
@@ -25,20 +25,20 @@ button.mat-flat-button {
 button.mat-flat-button {
   height: 50px;
 }
-  
-  
+
+
 mat-form-field {
   flex-grow: 1;
 }
-  
+
 mat-form-field:first-child {
   min-width: 300px;
 }
-  
+
 mat-form-field:nth-child(2) {
   min-width: 150px;
 }
-  
+
 button {
   height: 50px;
   position: relative;
@@ -72,6 +72,7 @@ button {
 .content {
   display: inline-block;
 }
+
 #icon {
   font-size: 20px; 
   color: #333; 
@@ -92,8 +93,8 @@ button {
 	z-index: 1;
 	margin: 0.05rem 0 0;
   overflow-wrap: break-word;
-            word-break: break-word;
-            white-space: normal; 
+  word-break: break-word;
+  white-space: normal;
 }
 
 ::-webkit-scrollbar {
@@ -127,4 +128,9 @@ button {
   font-size: 8px;
   color: rgb(209, 180, 14);
   top: -2px;
+}
+
+.btn-position {
+  position: relative;
+  top: 7px;
 }

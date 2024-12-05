@@ -12,8 +12,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDividerModule } from '@angular/material/divider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,11 +21,9 @@ import { AppComponent } from './app.component';
 import { AdavancedSearchComponent } from './components/adavanced-search/adavanced-search.component';
 import { SearchBarComponent } from './components/adavanced-search/search-bar/search-bar.component';
 import { HighlightPipe } from './common/pipes/highlight.pipe';
-import { AlphabeticPipePerson } from './common/pipes/alphabetic.pipe';
-import { AlphabeticPipePecialty } from './common/pipes/alphabetic.pipe';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { CustomPaginator } from './common/translations/custom-mat-paginator-intl';
 
 @NgModule({
   declarations: [
@@ -33,8 +31,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AdavancedSearchComponent,
     SearchBarComponent,
     HighlightPipe,
-    AlphabeticPipePerson,
-    AlphabeticPipePecialty,
     PersonDetailComponent
   ],
   imports: [
@@ -47,6 +43,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule,
     MatCardModule,
     MatPaginatorModule,
+    MatPaginatorModule,
     FlexLayoutModule,
     MatRadioModule,
     MatChipsModule,
@@ -55,11 +52,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatAutocompleteModule,
     MatDividerModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatDividerModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: CustomPaginator() }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

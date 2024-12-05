@@ -54,6 +54,10 @@ mat-card {
 .btn-outline-success {
     border: 1px solid rgb(69, 158, 114);
     color: rgb(69, 158, 114);
+    width: 25px;
+    height: 25px;
+    line-height: 22px;
+    top: 12px;
 }
 
 .me-2 {
@@ -110,4 +114,35 @@ mat-card {
 
 .bg-light {
     background-color: rgba(248, 249, 250, 1) !important;
+
+}
+
+#R {
+    font-size: 12px;
+}
+
+#trophy {
+    color: rgb(209, 180, 14);
+}
+
+.record-label {
+    color: hsl(198, 11%, 45%);
+    font-weight: 400;
+    font-size: .9em;
+}
+
+.record-value {
+    color: hsl(200, 10%, 17%);
+    font-weight: 400;
+    font-size: 1em;
+}
+
+.action-buttons {
+    display: flex;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.action-buttons .star {
+    color: gold;
 }
